@@ -1,0 +1,16 @@
+{
+  "preloads": [
+  	"love-theme/images/A.png",
+  	"love-theme/images/C.png",
+  	"love-theme/images/D.png",
+  	"love-theme/images/F.png",
+    "love-theme/images/E.png",
+  	"love-theme/images/left-border.png",
+  	"love-theme/images/right-border.png",
+  	"love-theme/images/avatar-circle-inner.png",
+  	"love-theme/images/avatar-circle-outer.png",
+  	"common_img/right-large-border.png",
+  	"love-theme/images/avatar-circle-inner.png",
+  	"love-theme/images/avatar-circle-outer.png"
+  ]
+}

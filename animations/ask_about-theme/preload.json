@@ -1,0 +1,15 @@
+{
+  "preloads": [
+  	"ask_about-theme/images/A.png",
+  	"ask_about-theme/images/E.png",
+  	"ask_about-theme/images/D.png",
+  	"ask_about-theme/images/C.png",
+  	"ask_about-theme/images/left-border.png",
+  	"ask_about-theme/images/right-border.png",
+  	"ask_about-theme/images/avatar-circle-inner.png",
+  	"ask_about-theme/images/avatar-circle-outer.png",
+  	"common_img/right-large-border-red.png",
+  	"ask_about-theme/images/avatar-circle-inner.png",
+  	"ask_about-theme/images/avatar-circle-outer.png"
+  ]
+}

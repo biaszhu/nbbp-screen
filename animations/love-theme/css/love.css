@@ -1,0 +1,190 @@
+html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  video::-webkit-media-controls {
+    display: none !important;
+  }
+
+  #video {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .main-pic {
+    position: absolute;
+    width: 10rem;
+    height: 10rem;
+    left: 50%;
+    top: 50%;
+    margin-left: -5rem;
+    margin-top: -5rem;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+  .main-theme-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: url(../images/A.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+  .animatePic {
+    -webkit-animation: scaleBirthday .8s both ease-out;
+    animation: scaleBirthday .8s both ease-out;
+  }
+
+@-webkit-keyframes scaleBirthday {
+    40% {
+      -webkit-transform: scale(1.2);
+    }
+    70% {
+      -webkit-transform: scale(0.95);
+    }
+    100% {
+      -webkit-transform: scale(1);
+    }
+  }
+
+  @keyframes scaleBirthday {
+    40% {
+      transform: scale(1.2);
+    }
+    70% {
+      transform: scale(0.95);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .main-pic img {
+    width: 100%;
+  }
+  .main-pic .light1 {
+    position: absolute;
+    left: 3%;
+    top: 4%;
+    width: 10.74rem;
+    mix-blend-mode: screen;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 0;
+  }
+  .main-pic .light2 {
+    position: absolute;
+    left: -5%;
+    top: -14%;
+    width: 12.4rem;
+    mix-blend-mode: screen;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 0;
+  }
+  
+  .main-pic .light3 {
+    position: absolute;
+    left: -8%;
+    top: 20%;
+    width: 6.8rem;
+    mix-blend-mode: screen;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 0;
+  }
+  
+  .main-pic .light4 {
+    position: absolute;
+    left: 33.8%;
+    bottom: 28.5%;
+    width: 6.8rem;
+    mix-blend-mode: screen;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 0;
+  }
+  
+  @-webkit-keyframes scaleLight {
+    to {
+      -webkit-transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes scaleLight {
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .light1.animate {
+    -webkit-animation: scaleLight .75s ease-out both;
+    animation: scaleLight .75s ease-out both;
+  }
+
+  .light2.animate {
+    -webkit-animation: scaleLight .75s ease-out both;
+    animation: scaleLight .75s ease-out both;
+  }
+
+  .light3.animate {
+    -webkit-animation: scaleLight .75s ease-out both;
+    animation: scaleLight .75s ease-out both;
+  }
+
+  .light4.animate {
+    -webkit-animation: scaleLight .75s ease-out both;
+    animation: scaleLight .75s ease-out both;
+  }
+
+  .user-img-wrapper {
+    background: url(../images/left-border.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .user-msg-box {
+    background: url(../images/right-border.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .avatar-circle-inner {
+    background: url(../images/avatar-circle-inner.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .avatar-circle-outer {
+    background: url(../images/avatar-circle-outer.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .user-msg-box2 {
+    background: url(../../common_img/right-large-border-purple.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .avatar-circle-inner2 {
+    background: url(../images/avatar-circle-inner.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .avatar-circle-outer2 {
+    background: url(../images/avatar-circle-outer.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }

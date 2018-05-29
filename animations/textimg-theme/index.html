@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../common_css/reset.css">
+  <link rel="stylesheet" type="text/css" href="../common_css/animate.min.css">
+  <link rel="stylesheet" type="text/css" href="../common_css/layout-theme-absolute.css">
+  <link rel="stylesheet" type="text/css" href="./css/textimg.css">
+  <script type="text/javascript">
+  function cal() {
+    var windowWidth = parent.window.innerWidth
+    window.fSize = windowWidth / 19.2
+    document.documentElement.style.fontSize = fSize + 'px'
+  }
+  cal()
+  window.addEventListener("resize", function() {
+    cal()
+  })
+  </script>
+</head>
+
+<body>
+  <!--{php $videoBgs = array("../common_bg/blue-bg.webm","../common_bg/purple-bg.webm","../common_bg/yellow-bg.webm","../common_bg/red-bg.webm");$index = rand(0,3);$cNames = array('blue','purple','yellow','red');}
+  <video id="video" class="blob-video" data-src="{php echo $videoBgs[$index];}" autoplay=true controls="false" loop="true"></video> {/if}-->
+  <!--<script type="text/javascript">
+  (function() {
+    var videos = document.querySelectorAll('.blob-video')
+    for (var i = 0; i < videos.length; i++) {
+      var el = videos[i]
+      var src = el.getAttribute('data-src')
+      if (parent.window.BlobVideos && parent.window.BlobVideos[src]) {
+        el.src = parent.window.BlobVideos[src]
+      } else {
+        el.src = src
+      }
+    }
+  })()
+  </script>-->
+  <input type="hidden" id="ba_type" value="0" />
+  <!--{if $screenRes["img"] == 'http://nb.siweiquanjing.com/attachment/images/niuba.jpg'}
+  <input type="hidden" id="ba_type" value="0" /> {else}
+  <input type="hidden" id="ba_type" value="1" /> {/if} {if $orderRes["html_ident"] == 'brotherV2'}-->
+  <!--只有图片和文字-->
+  <div id="secondScene">
+    <div class="flex flex-h flex-align-center" id="main">
+      <div class="user-img-wrapper {php echo $cNames[$index];}">
+        <p class="baping-timer">重金霸屏<span class="count_time">{php echo $orderRes["time1"];}</span>S</p>
+        <div class="user-img-container">
+          <img src="../images/pixel.gif" class="u-img" style="background-image:url({php echo $screenRes['img'];});">
+        </div>
+      </div>
+      <div class="user-msg-wrapper flex-1 flex flex-v flex-align-center">
+        <div class="user-info flex flex-v flex-align-center">
+          <div class="avatar-border">
+            <span class="avatar-circle-inner {php echo $cNames[$index];}"></span>
+            <span class="avatar-circle-outer {php echo $cNames[$index];}"></span>
+            <img src="{php echo $orderRes['avatar'];}">
+            <p class="name">{php echo mb_substr($orderRes['nickname'],0,20,'utf-8');}</p>
+          </div>
+        </div>
+        <div class="user-msg-box {php echo $cNames[$index];}">
+          <div class="text">
+            <p class="middle-inner text-content" style="visibility: hidden;">{php echo mb_substr($screenRes['msg'],0,30,'utf-8');}</p>
+          </div>
+          <p class="totalTime">{php echo $orderRes["show_time"];}秒</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="../common_js/theme-common.js?v=1"></script>
+  <script type="text/javascript" src="../common_js/jquery.fittext.js"></script>
+  <script type="text/javascript" src="../common_js/jquery.lettering.js"></script>
+  <script type="text/javascript" src="../common_js/jquery.textillate.js"></script>
+  <!-- 示爱 -->
+  <script type="text/javascript" src="./js/textimg.js"></script>
+
+  <script>
+  $(function() {
+    // parent.window.showTheme()
+    // window.init({php echo $orderRes["time1"];})
+    window.init(60)
+  })
+  </script>
+</body>
+
+</html>

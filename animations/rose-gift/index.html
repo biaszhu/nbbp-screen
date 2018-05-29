@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-touch-fullscreen" content="YES">
+  <meta name="screen-orientation" content="portrait">
+  <meta name="x5-orientation" content="portrait">
+  <title></title>
+  <script src="../common_js/rem.min.js"></script>
+  <link rel="stylesheet" href="../common_css/base.min.css">
+  <link rel="stylesheet" href="./css/rose.css">
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="../common_js/base.min.js"></script>
+  <script src="../common_js/tween.min.js"></script>
+  <script src="../common_js/common.js"></script>
+</head>
+
+<body class="f-bg100">
+  <script id="tpl" type="text/plain">
+    <!--玫瑰-->
+    <div class="loader" id="loader">正在加载动画...</div>
+    <div id="body" style="display: none;">
+      <!-- <div id="center-light"></div> -->
+      <div id="rose">
+        <div class="posImg"></div>
+      </div>
+      <div id="color">
+        <div class="posImg"></div>
+      </div>
+      <div id="glitter">
+        <div class="posImg"></div>
+      </div>
+      <div id="user-send">
+        <div id="user-content" class="flex flex-v flex-pack-center">
+          <div id="user-top" class="flex flex-h flex-pack-center">
+            <div class="avatar">
+              <img src="{data.initiator_headimgurl}">
+            </div>
+            <div class="flex flex-v flex-pack-center" id="msg-content">
+              <div class="msg">送给</div>
+              <div class="timeaccount">
+                <img src="images/i_clock.png" class="i-clock">
+                <span id="time">{data.odr_show_time}</span>
+                <span class="second">秒</span>
+              </div>
+            </div>
+            <div class="avatar">
+              <img src="{data.sendee_headimgurl}">
+            </div>
+          </div>
+          <div id="user-names" class="flex flex-h flex-pack-center">
+            <div class="name">{data.initiator_nickname}</div>
+            <div class="blank-place"></div>
+            <div class="name">{data.sendee_nickname}</div>
+          </div>
+          <div class="middle-box">
+            <div class="middle-inner">
+              <p><span class="suc-tip">{data.content}</span></p>
+            </div>
+          </div>
+          <!--<div id="words"><span>8号桌的美女真靓啊，可以给个电话吗？</span></div>-->
+        </div>
+      </div>
+    </div>
+  </script>
+</body>
+<script type="text/javascript" src="../common_js/anime.min.js"></script>
+<script type="text/javascript" src="../common_js/imagesloaded.pkgd.min.js"></script>
+<script type="text/javascript" src="./js/rose.js"></script>
+<script type="text/javascript">
+$(function() {
+  // time
+  window.addEventListener('message', function(e) {
+    var origin = e.origin || e.originalEvent.origin;
+    if (origin !== window.location.origin)
+      return;
+    var tpl = new Template($('#tpl').html());
+    var s = tpl.render({
+      data: e.data
+    });
+    $('body').append(s);
+    if (e.data.content.trim() == '') {
+      $('.middle-box').addClass('noword')
+    }
+    parent.window.postMessage({status: 'open'}, '*')
+    Rose.init(e.data.odr_show_time)
+    // parent.window.showTheme()
+    // window.init({php echo $orderRes["time1"];})
+
+  })
+  parent.window.postMessage({status: 'ready'}, '*')
+  // Rose.init({php echo $orderRes["time1"];})
+})
+</script>
+
+</html>

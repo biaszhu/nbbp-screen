@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-touch-fullscreen" content="YES">
+  <meta name="screen-orientation" content="portrait">
+  <meta name="x5-orientation" content="portrait">
+  <title></title>
+  <script src="../common_js/rem.min.js"></script>
+  <link rel="stylesheet" href="../common_css/base.min.css">
+  <link rel="stylesheet" href="./css/vehicle.css">
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="../common_js/base.min.js"></script>
+  <script src="../common_js/tween.min.js"></script>
+  <script src="../common_js/common.js"></script>
+</head>
+
+<body class="f-bg100">
+  <script id="tpl" type="text/plain">
+    <!--兰博基尼-->
+    <div class="m-bg2 f-bg100" style="opacity: 0;"></div>
+    <!-- lights -->
+    <div class="m-lights">
+      <img class="bg-1" style="z-index:7;" src="./images/bg1.png" alt="">
+      <img class="bg-2" style="z-index:7;" src="./images/bg2.png" alt="">
+      <img class="bg-3" style="z-index:9;" src="./images/bg3.png" alt="">
+    </div>
+    <!-- car -->
+    <div class="m-car">
+      <p>
+        <img class="icon-car" src="./images/car.png" alt="">
+        <img class="icon-light light-1" style="opacity: 1" src="./images/light_1.png" alt="">
+        <img class="icon-light light-2" style="opacity: 1" src="./images/light_2.png" alt="">
+        <em class="icon-wheel m-wl_f"></em>
+        <em class="icon-wheel m-wl_e"></em>
+      </p>
+    </div>
+    <!-- window -->
+    <div class="m-win z-hide">
+      <div class="m-w_top u-c-middle">
+        <p>
+          <img class="m-avator" src="{data.initiator_headimgurl}" alt="">
+          <b class="lh75">{data.initiator_nickname}</b>
+        </p>
+        <p class="m-wt_m">
+          <b class="u-block fs58">送给</b>
+          <img class="icon-clock" src="images/i_clock.png" alt="">
+          <b id="countDown" class="fs38">{data.odr_show_time}</b>
+          <span>秒</span>
+        </p>
+        <p>
+          <img class="m-avator" src="{data.sendee_headimgurl}" alt="">
+          <b class="lh75">{data.sendee_nickname}</b>
+        </p>
+      </div>
+      <p class="m-w_word u-c-middle">
+        <b style="opacity:0">{data.content}</b>
+      </p>
+    </div>
+  </script>
+</body>
+<script type="text/javascript" src="./js/vehicle.js"></script>
+<script type="text/javascript">
+$(function() {
+  window.addEventListener('message', function(e) {
+    var origin = e.origin || e.originalEvent.origin;
+    if (origin !== window.location.origin)
+      return;
+    var tpl = new Template($('#tpl').html());
+    var s = tpl.render({
+      data: e.data
+    });
+    $('body').append(s);
+    if (e.data.content.trim() == '') {
+      $('.m-w_word').addClass('noword')
+    }
+    parent.window.postMessage({status: 'open'}, '*')
+    Car.init({
+      winWordSpeed: 80, // 弹窗文字出现速度
+      wheelTime: 30, // 轮子转动时间（毫秒）
+      carTime: 2, // 车移动时间（秒）
+      winInTime: 300, // 弹窗渐进时间
+      show_time: e.data.odr_show_time
+      /*show_time:{php echo $orderRes["time1"];}*/
+    });
+    // parent.window.showTheme()
+    // window.init({php echo $orderRes["time1"];})
+
+  })
+  parent.window.postMessage({status: 'ready'}, '*')
+})
+</script>
+
+</html>

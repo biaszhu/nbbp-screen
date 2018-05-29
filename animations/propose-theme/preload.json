@@ -1,0 +1,18 @@
+{
+  "preloads": [
+  	"propose-theme/images/A.png",
+  	"propose-theme/images/C.png",
+  	"propose-theme/images/F.png",
+  	"propose-theme/images/D.png",
+    "propose-theme/images/E.png",
+    "propose-theme/images/loveheart1.png",
+    "propose-theme/images/loveheart2.png",
+  	"propose-theme/images/left-border.png",
+  	"propose-theme/images/right-border.png",
+  	"propose-theme/images/avatar-circle-inner.png",
+  	"propose-theme/images/avatar-circle-outer.png",
+  	"common_img/right-large-border-purple.png",
+  	"propose-theme/images/avatar-circle-inner.png",
+  	"propose-theme/images/avatar-circle-outer.png"
+  ]
+}

@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-touch-fullscreen" content="YES">
+  <meta name="screen-orientation" content="portrait">
+  <meta name="x5-orientation" content="portrait">
+  <title></title>
+  <script src="../common_js/rem.min.js"></script>
+  <link rel="stylesheet" href="../common_css/base.min.css">
+  <link rel="stylesheet" href="./css/yacht.css">
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="../common_js/base.min.js"></script>
+  <script src="../common_js/tween.min.js"></script>
+  <script src="../common_js/common.js"></script>
+</head>
+
+<body class="f-bg100">
+  <script id="tpl" type="text/plain">
+    <!--豪华游艇-->
+    <div class="m-ctn"></div>
+    <!-- 椰树 -->
+    <img class="m-coconut" src="./images/i_coconut.png" alt="">
+    <!-- mews -->
+    <div class="m-mews">
+      <img data-bottom="64%" data-speed="789" src="./images/i_mew1.png" alt="">
+      <img data-bottom="82.7%" data-speed="679" src="./images/i_mew2.png" alt="">
+      <img data-bottom="83.2%" data-speed="602" src="./images/i_mew3.png" alt="">
+      <img data-bottom="31.3%" data-speed="504" src="./images/i_mew4.png" alt="">
+      <img data-bottom="31%" data-speed="400" src="./images/i_mew5.png" alt="">
+    </div>
+    <!-- ship -->
+    <div class="m-ship" data-bottom="12.96%" data-right="31.4%" data-width="51.56%">
+      <img class="icon-ship" src="./images/i_ship.png" alt="">
+      <img class="icon-wave selected" src="./images/x1.png" alt="">
+      <img class="icon-wave" src="./images/x2.png" alt="">
+      <img class="icon-wave" src="./images/x3.png" alt="">
+    </div>
+    <!-- window -->
+    <div class="m-win z-hide">
+      <div class="m-w_top u-c-middle">
+        <p>
+          <img class="m-avator" src="{data.initiator_headimgurl}" alt="">
+          <b class="lh75">{data.initiator_nickname}</b>
+        </p>
+        <p class="m-wt_m">
+          <b class="u-block fs58">送给</b>
+          <img class="icon-clock" src="images/i_clock.png" alt="">
+          <b id="countDown" class="fs38">{data.odr_show_time}</b>
+          <span>秒</span>
+        </p>
+        <p>
+          <img class="m-avator" src="{data.sendee_headimgurl}" alt="">
+          <b class="lh75">{data.sendee_nickname}</b>
+        </p>
+      </div>
+      <p class="m-w_word u-c-middle">
+        <b style="opacity:0">{data.content}</b>
+      </p>
+    </div>
+  </script>
+</body>
+<script type="text/javascript" src="./js/yacht.js"></script>
+<script type="text/javascript">
+$(function() {
+  window.addEventListener('message', function(e) {
+    var origin = e.origin || e.originalEvent.origin;
+    if (origin !== window.location.origin)
+      return;
+    var tpl = new Template($('#tpl').html());
+    var s = tpl.render({
+      data: e.data
+    });
+    $('body').append(s);
+    parent.window.postMessage({status: 'open'}, '*')
+    Ship.init({
+      winWordSpeed: 100, // 弹窗文字出现速度
+      shipTime: 3000, // 船移动时间
+      mewTime: 2000, // 海鸥移动时间
+      waveChangeTime: 400, // 波浪变换时间
+      winInTime: 2000, // 弹窗渐进时间
+      waveTime: 36, // 波浪移动时间（秒）
+      show_time: e.data.odr_show_time
+      /* show_time:{php echo $orderRes["time1"];} */
+    });
+
+  })
+  parent.window.postMessage({status: 'ready'}, '*')
+});
+</script>
+
+</html>

@@ -1,0 +1,21 @@
+{
+  "preloads": [
+  	"textimg-theme/images/left-border.png",
+    "birthday-theme/images/left-border.png",
+    "love-theme/images/left-border.png",
+    "brother-theme/images/left-border.png",
+    "textimg-theme/images/right-border.png",
+    "love-theme/images/right-border.png",
+    "birthday-theme/images/right-border.png",
+    "brother-theme/images/right-border.png",
+  	"textimg-theme/images/avatar-circle-inner.png",
+    "love-theme/images/avatar-circle-inner.png",
+    "birthday-theme/images/avatar-circle-inner.png",
+    "brother-theme/images/avatar-circle-inner.png",
+  	"textimg-theme/images/avatar-circle-outer.png",
+    "birthday-theme/images/avatar-circle-outer.png",
+    "brpther-theme/images/avatar-circle-outer.png",
+    "love-theme/images/avatar-circle-outer.png",
+    "common_img/right-large-border-red.png"
+  ]
+}

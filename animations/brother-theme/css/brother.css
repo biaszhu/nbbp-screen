@@ -1,0 +1,203 @@
+html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  video::-webkit-media-controls {
+    display: none !important;
+  }
+
+  #video {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .main-pic {
+    position: absolute;
+    width: 16.72rem;
+    height: 14rem;
+    left: 50%;
+    top: 50%;
+    margin-left: -8.36rem;
+    margin-top: -7rem;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+
+  .animatePic {
+    -webkit-animation: scaleBirthday .5s both ease-in;
+    animation: scaleBirthday .5s both ease-in;
+  }
+  
+  @-webkit-keyframes scaleBirthday {
+    40% {
+      -webkit-transform: scale(1.2);
+    }
+    70% {
+      -webkit-transform: scale(0.95);
+    }
+    100% {
+      -webkit-transform: scale(1);
+    }
+  }
+
+  @keyframes scaleBirthday {
+    40% {
+      transform: scale(1.2);
+    }
+    70% {
+      transform: scale(0.95);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .main-pic img {
+    width: 100%;
+  }
+
+  .main-pic .light1 {
+    position: absolute;
+    right: 22%;
+    top: 23%;
+    width: 9.74rem;
+    mix-blend-mode: screen;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 0;
+  }
+  .main-pic .light2 {
+    position: absolute;
+    left: 4%;
+    top: 11%;
+    width: 12.4rem;
+    mix-blend-mode: screen;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 0;
+  }
+  
+  @-webkit-keyframes scaleLight {
+    to {
+      -webkit-transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes scaleLight {
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .light1.animate {
+    -webkit-animation: scaleLight .75s ease-out both;
+    animation: scaleLight .75s ease-out both;
+  }
+
+  .light2.animate {
+    -webkit-animation: scaleLight .75s ease-out both;
+    animation: scaleLight .75s ease-out both;
+  }
+
+  .main-theme-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: url(../images/A.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .light {
+    position: absolute;
+    left: 2.66rem;
+    bottom: 2.35rem;
+    width: 6.4rem;
+    height: 1.55rem;
+    overflow: hidden;
+  }
+
+  .light-inner {
+    position: absolute;
+    width: 1rem;
+    height: 100%;
+    left: -25%;
+    -webkit-transform: skew(-30deg);
+    transform: skew(-30deg);
+    background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) -120%, rgba(255, 255, 255, 0.2));
+  }
+
+  @keyframes moveLight {
+    0% {
+      left: -25%;
+    }
+    100% {
+      left: 120%;
+    }
+  }
+  
+  @-webkit-keyframes moveLight {
+    0% {
+      left: -25%;
+    }
+    100% {
+      left: 120%;
+    }
+  }
+
+  .moveLight {
+    -webkit-animation: moveLight 2s ease-out both;
+    animation: moveLight 2s ease-out both;
+  }
+
+  .user-img-wrapper {
+    background: url(../images/left-border.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .user-msg-box {
+    background: url(../images/right-border.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .avatar-circle-inner {
+    background: url(../images/avatar-circle-inner.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .avatar-circle-outer {
+    background: url(../images/avatar-circle-outer.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .user-msg-box2 {
+    background: url(../../common_img/right-large-border.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .avatar-circle-inner2 {
+    background: url(../images/avatar-circle-inner.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .avatar-circle-outer2 {
+    background: url(../images/avatar-circle-outer.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }

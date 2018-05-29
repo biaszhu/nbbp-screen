@@ -1,0 +1,235 @@
+html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  video::-webkit-media-controls {
+    display: none !important;
+  }
+
+  #video {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  #canvas-holder {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 9.4rem;
+    height: 4.6rem;
+    margin-left: -4.7rem;
+    margin-top: -3.8rem;
+  }
+  
+  #canvas {
+    position: absolute;
+    left: 50%;
+    top: 0;
+  }
+  
+  .main-pic {
+    position: absolute;
+    width: 16rem;
+    height: 16.4rem;
+    left: 50%;
+    top: 52%;
+    margin-left: -8rem;
+    margin-top: -8.2rem;
+    -webkit-transform: perspective(100px) translate3d(0,0,100px);
+    transform: perspective(100px) translate3d(0,0,100px);
+  }
+
+  .animatePic {
+    -webkit-animation: scaleBirthday .5s both ease-in;
+    animation: scaleBirthday .5s both ease-in;
+  }
+  
+  @-webkit-keyframes scaleBirthday {
+    100% {
+      -webkit-transform:perspective(100px) translate3d(0,0,0);
+    }
+  }
+  
+  @keyframes scaleBirthday {
+    100% {
+      transform: perspective(100px) translate3d(0,0,0);
+    }
+  }
+
+  .main-pic img {
+    width: 100%;
+  }
+
+  .main-pic .light1 {
+    position: absolute;
+    right: 18.5%;
+    top: 29%;
+    width: 3.74rem;
+    mix-blend-mode: screen;
+    -webkit-transform: scale(0) rotateZ(30deg);
+    transform: scale(0) rotateZ(30deg);
+    opacity: 0;
+  }
+  .main-pic .light2 {
+    position: absolute;
+    left: 9%;
+    top: 15%;
+    width: 12.4rem;
+    mix-blend-mode: screen;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 0;
+  }
+  .main-pic .light3 {
+    position: absolute;
+    left: 13%;
+    bottom: 18.5%;
+    width: 12.4rem;
+    mix-blend-mode: screen;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 0;
+  }
+  @-webkit-keyframes scaleLight {
+    to {
+      -webkit-transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes scaleLight {
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  @-webkit-keyframes scaleLight1 {
+    to {
+      -webkit-transform: scale(1) rotateZ(30deg);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes scaleLight1 {
+    to {
+      transform: scale(1) rotateZ(30deg);
+      opacity: 1;
+    }
+  }
+
+  .light1.animate {
+    -webkit-animation: scaleLight1 .75s ease-out both;
+    animation: scaleLight1 .75s ease-out both;
+  }
+
+  .light2.animate {
+    -webkit-animation: scaleLight .75s ease-out both;
+    animation: scaleLight .75s ease-out both;
+  }
+  
+  .light3.animate {
+    -webkit-animation: scaleLight .75s ease-out both;
+    animation: scaleLight .75s ease-out both;
+  }
+
+  .main-theme-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: url(../images/A.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .light {
+    position: absolute;
+    left: 5.04rem;
+    bottom: 5.7rem;
+    width: 6.25rem;
+    height: 1.7rem;
+    overflow: hidden;
+  }
+
+  .light-inner {
+    position: absolute;
+    width: 1rem;
+    height: 100%;
+    left: -25%;
+    -webkit-transform: skew(-30deg);
+    transform: skew(-30deg);
+    background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) -120%, rgba(255, 255, 255, 0.2));
+  }
+  
+  @-webkit-keyframes moveLight {
+    0% {
+      left: -25%;
+    }
+    100% {
+      left: 120%;
+    }
+  }
+
+  @keyframes moveLight {
+    0% {
+      left: -25%;
+    }
+    100% {
+      left: 120%;
+    }
+  }
+
+  .moveLight {
+    -webkit-animation: moveLight 2s ease-out both;
+    animation: moveLight 2s ease-out both;
+  }
+
+  .user-img-wrapper {
+    background: url(../images/left-border.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .user-msg-box {
+    background: url(../images/right-border.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .avatar-circle-inner {
+    background: url(../images/avatar-circle-inner.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .avatar-circle-outer {
+    background: url(../images/avatar-circle-outer.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .user-msg-box2 {
+    background: url(../../common_img/right-large-border.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .avatar-circle-inner2 {
+    background: url(../images/avatar-circle-inner.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }
+
+  .avatar-circle-outer2 {
+    background: url(../images/avatar-circle-outer.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+  }

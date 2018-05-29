@@ -1,0 +1,19 @@
+{
+  "preloads": [
+  	"birthday-theme/images/A.png",
+  	"birthday-theme/images/ball1.png",
+  	"birthday-theme/images/ball2.png",
+  	"birthday-theme/images/ball3.png",
+  	"birthday-theme/images/ball4.png",
+  	"birthday-theme/images/ball5.png",
+  	"birthday-theme/images/ball6.png",
+  	"birthday-theme/images/ball7.png",
+    "birthday-theme/images/left-border.png",
+    "birthday-theme/images/right-border.png",
+    "birthday-theme/images/avatar-circle-inner.png",
+    "birthday-theme/images/avatar-circle-outer.png",
+    "birthday-theme/images/avatar-circle-inner.png",
+    "birthday-theme/images/avatar-circle-outer.png",
+  	"common_img/right-large-border-yellow.png"
+  ]
+}

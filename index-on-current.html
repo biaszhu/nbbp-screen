@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>牛霸霸屏</title>
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+  <meta http-equiv=X-UA-Compatible content=“IE=EmulateIE10”>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link rel="stylesheet" type="text/css" href="css/reset.css">
+  <link rel="stylesheet" type="text/css" href="css/app.css?v=32">
+  <script type="text/javascript">
+  function cal() {
+    var windowWidth = window.innerWidth
+    var windowHeight = window.innerHeigh
+    document.documentElement.style.fontSize = windowWidth / 19.2 + 'px'
+    window.fontSize = windowWidth / 19.2
+    /*if (windowWidth > windowHeight && (windowWidth / windowHeight) > 2.5) {
+      document.documentElement.style.fontSize = windowHeight / 19.2 + 'px'
+      window.fontSize = windowHeight / 19.2
+    } else {
+      document.documentElement.style.fontSize = windowWidth / 19.2 + 'px'
+      window.fontSize = windowWidth / 19.2
+    }*/
+  }
+  cal()
+  window.addEventListener("resize", function() {
+    cal()
+  })
+  var baseURL = 'http://xnb.siweiquanjing.com'
+  
+  </script>
+</head>
+
+<body>
+  <script>
+!(function(c,b,d,a){c[a]||(c[a]={});c[a].config={pid:"cu61hvjyfe@1dd2017ab416c92",imgUrl:"https://arms-retcode.aliyuncs.com/r.png?",disableHook:true};
+with(b)with(body)with(insertBefore(createElement("script"),firstChild))setAttribute("crossorigin","",src=d)
+})(window,document,"https://retcode.alicdn.com/retcode/bl.js","__bl");
+</script>
+  <div id="loading-page" class="full">
+    <div id="loading-content">
+      <img src="images/logo1.png" class="loading-logo" width="80" height="80">
+      <div id="progressbar">
+        <div class="progress"></div>
+      </div>
+      <p style="color:#e73a84;font-size: 17px;text-align: center;margin-top: 10px;" id="percent">0%</p>
+      <p style="color:#e73a84;font-size: 17px;text-align: center;margin-top: 10px;">需要些加载时间，请耐心等待...</p>
+    </div>
+    <div id="version-tip" style="display: block;position: absolute;left: 50%;bottom: 10px;transform: translate3d(-50%, 0, 0);color:#e73a84;font-size: 17px;">当前版本：V1.0.0</div>
+  </div>
+  <div id="ad-page" class="full">
+    <div class="count-label"></div>
+  </div>
+  <div id="app">
+    <!-- <video id="video" class="blob-video" data-src="bg.webm" autoplay=true controls="false" loop="true"></video> -->
+    <!--<video id="video" class="blob-video" data-src="../addons/bl_wx_wall/template/images/newbig/bg.webm" autoplay=true controls="false" loop="true"></video>-->
+    <div class="main" id="main" v-if="show">
+      <div class="msgbt">
+        <img src="http://nb.siweiquanjing.com/addons/bl_wx_wall/template/images/new_img/36.png" class="broadcast">
+        <div class="official-info">
+          <div class="marquee" id="testmarquee">
+            <div class="official-msg" data-duration='20000' data-gap='5' data-duplicated='true' style="width:100%;overflow:hidden;"><span class="notice" v-for="i in 4" :key="i">{{notice}}</span></div>
+          </div>
+        </div>
+      </div>
+      <span class="rank-border"></span>
+      <div class="logo">
+        <img :src="basicInfo.logo" style="border-radius: 50%;display: block;">
+      </div>
+      <div id="marquee" style="display: none;">
+        <div class="marquee-scroller">
+        </div>
+      </div>
+      <div id="bridge" style="display: none;">
+        <div class="bridge-item" id="tmp" style="visibility: hidden;"><span class="rank-border"></span></div>
+      </div>
+      <div id="qrcode-wrap">
+        <div id="qrcode-box">
+          <img src="images/cow.png" class="cow">
+          <img src="images/h1.png" class="heart1">
+          <img src="images/h2.png" class="heart2">
+          <img src="images/h1.png" class="heart1 heart1-copy">
+          <img src="images/h2.png" class="heart2 heart2-copy">    
+          <img :src="showQrcode | prefixImageUrl" class="qrcode" v-if="basicInfo.qrcode">
+          <img src="images/sao.png" class="wenzi">
+        </div>
+      </div>
+      <div id="bg-container">
+        <video id="video" class="full" :src="videoSrc"  controls="false" loop="true" v-show="type == 2"></video>
+        <div id="imgBg" class="full" :style="styleSrc"  v-show="type == 1"></div>
+      </div>
+      <div id="controls">
+        <div class="arrow-toggle">
+          <img src="./images/arrow-toggle.png">
+        </div>
+        <ul>
+          <li class="title">设置</li>
+          <li class="control">背景设置
+            <div class="control-content click">
+              <h4>大屏幕背景选择</h4>
+              <div class="radio-group mt20">
+                <label class="bgradio" for="bpselet1"><input type="radio" v-model="setting.bgPicked" id="bpselet1" value="2">视频</label>
+                <label class="bgradio" for="bpselet2"><input type="radio" v-model="setting.bgPicked" id="bpselet2" value="1">图片</label>
+                <label class="bgradio" for="bpselet3"><input type="radio" v-model="setting.bgPicked" id="bpselet3" value="0">透明背景</label>
+              </div>
+              <p style="color: #ccc;font-size:13px;" class="mt20">您可以在商户管理后台勾选需要的视频和图片背景</p>
+              <div id="bg-wrap" v-if="basicInfo.ptBgs" >
+                <div class="bp-item" :class="{'active': v.id == selectId}" @click="changeBg(v.url, v.type, v.id)" v-for="(v, i) in filtersBg" :key="i">{{v.name}}</div>
+              </div>
+            </div>
+          </li>
+          <li class="control">轮播设置
+            <div class="control-content click">
+              <h4>轮播动画选择</h4>
+              <div class="radio-group mt20">
+                <label class="bgradio" for="animaselet1"><input type="radio" v-model="setting.animateType" id="animaselet1" value="2">弹幕</label>
+                <label class="bgradio" for="animaselet2"><input type="radio" v-model="setting.animateType" id="animaselet2" value="1">滚动</label>
+              </div>
+            </div>
+          </li>
+          <li class="control hoverout" @click="visibleSet(JSON.stringify({key: 'qrcodeSetting', value: true}))">二维码设置</li>
+          <li style="padding: 15px 10px; font-size: 16px;text-align: left;">
+            <p>!!! 注意：</p>
+          同按【Alt+Tab】可调出设置窗口</li>
+        </ul>
+      </div>
+    </div>
+    <!--settings-->
+    <div id="qrcode-setting" class="fix-center f18" v-show="visible.qrcodeSetting">
+      <h4 class="f20">二维码设置<i class="iconfont pointer" style="float: right;font-size: 28px;margin-top: -6px;" @click="visibleSet(JSON.stringify({key: 'qrcodeSetting', value: false}))">&#xe658;</i></h4>
+      <div class="qrcode-main">
+        <p>勾选的二维码将会在大屏幕展示</p>
+        <div class="qrcode-list mt20">
+          <!-- <div class="qrcode-item selected-item pointer qrcode-item-can">
+            <img src="http://niuba.siweiquanjing.com/uploads/er/2df85ef8b0f6202a5fb563546a883f27.png">
+            <p class="f16 title" style="margin-top: 10px;">商户微上墙二维码</p>
+            <i class="iconfont selected">&#xe618;</i>
+          </div> -->
+          <div class="qrcode-item pointer qrcode-item-can" v-for="(v, i) in customeQrcodes" :key="i" :class="{'selected-item': v.is_default == 1}" @click="setDefaultQrcode(i)">
+            <img :src="v.img_url | prefixImageUrl">
+            <p class="f16 title" style="margin-top: 10px;">
+              <template v-if="!v.edit">
+              <span>{{v.name}}</span>
+              <i class="iconfont pointer edit-qrcode" @click.stop="editQrCode(i)" v-if="v.is_merchant != 1">&#xe603;</i>
+              </template>
+              <template v-else>
+                <input type="text" class="input-qrcode" @click.stop="" @blur="qrcodeInputBlur(i)" maxlength="8" :value="v.name" autofocus />
+              </template>
+            </p>
+            <span class="delete-qrcode pointer" @click.stop="deleteCustomeQrcode(i)" v-if="v.is_merchant != 1"><i class="iconfont">&#xe60d;</i></span>
+            <i class="iconfont selected">&#xe618;</i>
+          </div>
+          <label class="qrcode-item" id="fileupload-item" for="fileupload" v-show="customeQrcodes.length < 3" style="display: flex;flex-direction: column;justify-content: center;">
+            <i class="iconfont" style="font-size: 36px;">&#xe727;</i>
+            <p>点击上传图片</p>
+            <input type="file" name="file" id="fileupload">
+          </label>
+        </div>
+      </div>
+    </div>
+    <!--新主题动画-->
+    <div id="new_theme_baping" style="display:none;">
+      <iframe id="new_theme" name="new_theme" src="" width="100%" height="100%"></iframe>
+    </div>
+    <!--打赏动画 -->
+    <div class="fullwrap hb-container" id="giftContainer">
+      <div id="" class="fullwrap fullCenter scaleContainer">
+        <video id="videoGift_person" autoplay="true" class="full" src="" controls="false" style="width: 1920px;height: 1080px;object-fit: cover;" data-key="hb-only" data-src="hb-only.webm"></video>
+      </div>
+      <div id="giftContainer_person">
+        <div id="" class="full webscale hb_main_person" style="z-index: 1003;">
+          <template v-if="orderData">
+            <div class="hb_person_avatar">
+              <div class="hb_person_t">
+                <img :src="orderData.initiator_headimgurl">
+              </div>
+              <div class="hb_person_n">
+                <p>{{orderData.initiator_nickname}}</p>
+              </div>
+            </div>
+            <div class="hb_person_middle">
+              <div class="hb_person_title">
+                <div>
+                  <p style="font-size: 56px;">送出了{{orderData.title}}<img :src="'images/plus' + orderData.odr_num + '.png'" style="height: 50px;display: inline-block;"></p>
+                  <p class="hb_person_content" style="font-size: 36px;color: #fff500;">{{orderData.content}}</p>
+                </div>
+                <div class="">
+                  <img src="images/hb_arrow.png">
+                </div>
+              </div>
+              
+            </div>
+            <div class="hb_person_avatar">
+              <div class="hb_person_t">
+                <img :src="orderData.sendee_headimgurl">
+              </div>
+              <div class="hb_person_n">
+                <p>{{orderData.sendee_nickname}}</p>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+    <!--红包显示-->
+    <div class="fullwrap hb-container" id="hbContainer">
+      <div id="new_hongbao" class="fullwrap fullCenter scaleContainer">
+        <video id="videoHongbao" autoplay="true" class="full" src="" controls="false" style="width: 1920px;height: 1080px;object-fit: cover;" data-key="hb-rain" data-src="hb-rain.webm"></video>
+        <template v-if="hbInfo.hb">
+          <div id="hb_main" style="display: none;">
+            <img :src="hbInfo.initiator_headimgurl | prefixImageUrl" class="hb-avatar">
+            <div id="gold-owner">
+              <p class="g1 golder">金主 {{hbInfo.initiator_nickname}}</p>
+              <!-- <p style="line-height: 36px;" v-if="hbInfo.hb.type == 3 && hbInfo.hb.amount == 1"><span class="gold-label"><span class="nickname">{{hbInfo.hb.user.nickname}}</span>专享</span></p> -->
+              <p style="line-height: 36px;" v-if="hbInfo.hb.type == 2"><span class="gold-label male">男士专享</span></p>
+              <p style="line-height: 36px;" v-if="hbInfo.hb.type == 1"><span class="gold-label male">女士专享</span></p>
+              <p class="g2">{{hbInfo.hb.content}}</p>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+    <!--专属红包显示-->
+    <div class="fullwrap hb-container" id="hbContainer2">
+      <div id="new_hongbao_person" class="fullwrap fullCenter scaleContainer">
+        <video id="videoHongbao_person" autoplay="true" class="full" src="" controls="false" style="width: 1920px;height: 1080px;object-fit: cover;" data-key="hb-only" data-src="hb-only.webm"></video>
+      </div>
+      <div id="hb_person">
+        <div id="hb_main_person" class="full webscale hb_main_person" style="z-index: 1003;">
+          <template v-if="hbInfo.hb">
+          <div class="hb_person_avatar">
+            <div class="hb_person_t">
+              <img :src="hbInfo.initiator_headimgurl | prefixImageUrl">
+            </div>
+            <div class="hb_person_n">
+              <p>{{hbInfo.initiator_nickname}}</p>
+            </div>
+          </div>
+          <div class="hb_person_middle">
+            <div class="hb_person_title">
+              <div>
+                <p>专属红包</p>
+                <p class="hb_person_content">{{hbInfo.hb.content}}</p>
+              </div>
+              <div class="">
+                <img src="images/hb_arrow.png">
+              </div>
+            </div>
+            
+          </div>
+          <div class="hb_person_avatar">
+            <div class="hb_person_t">
+              <img :src="hbInfo.hb.user.headimgurl | prefixImageUrl">
+            </div>
+            <div class="hb_person_n">
+              <p>{{hbInfo.hb.user.nickname}}</p>
+            </div>
+          </div>
+          </template>
+        </div>
+      </div>
+    </div>
+    
+    <!--红包抢完-->
+    <div class="new_theme_baping" id="hb_end" style="display:none;">
+      <div class="center-hb-info scaleContainer">
+        <img :src="hbInfo.initiator_headimgurl | prefixImageUrl" class="hb-end-avatar">
+        <p class="thx-for">感谢 金主 {{hbInfo.initiator_nickname}}</p>
+        <p class="thx-end-second">秒抢光</p>
+      </div>
+    </div>
+    <div id="right-btn-group" class="scaleContainer">
+      <button class="right-btn lottery-btn" @click="goTo('lottery.html')">抽奖</button>
+    </div>
+  </div>
+  <input type="hidden" id="adUrl" value="">
+  <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script>if (typeof module === 'object') {window.jQuery = window.$ = module.exports;};</script>
+  <script type="text/javascript" src="js/vue.js"></script>
+  <script type="text/javascript" src="js/anime.min.js"></script>
+  <script src="js/imagepreload.js?v=5.2"></script>
+  <script type="text/javascript" src="js/jquery.marquee.min.js"></script>
+  <script src="js/jquery.ui.widget.js"></script>
+  <script src="js/jquery.iframe-transport.js"></script>
+  <script src="js/jquery.fileupload.js"></script>
+  <script src="vendor/layer/layer.js"></script>
+  <script src="js/Tdrag.js"></script>
+  <script type="text/javascript" src="js/func.js?v=1"></script>
+  <script type="text/javascript" src="js/danmu.js?v=76"></script>
+  <script type="text/javascript" src="js/controls.js?v=61"></script>
+  <script type="text/javascript">
+    // 禁止右键菜单
+    document.oncontextmenu=new Function("event.returnValue=false;");
+    document.onselectstart=new Function("event.returnValue=false;");
+    
+  // Vue 全局过滤器
+  Vue.filter('prefixImageUrl', function (url) {
+    if (!url) {
+      return
+    }
+    if (url.indexOf('http') === 0) {
+      return url
+    }
+    return baseURL + url
+  })
+  Vue.filter('filterBg', function(v, type){
+    if (v && type) {
+      return "background: -webkit-linear-gradient(left," + v.split(',')[0] + "," + v.split(',')[1] + " 70%," + v.split(',')[1] + ")"
+    } else if (type == '1') {
+      return "background: -webkit-linear-gradient(left,rgba(249, 157, 252, 0.35),rgba(140, 156, 241, 0.35) 70%,rgba(140, 156, 241, 0.35))"
+    }
+  })
+  
+  var barConfig = {
+    ht_id: getQueryString("ht_id")
+  }
+  var Anitype = 1 // 1滚动 2弹幕
+
+  var bar = {}
+  var isAppInit = false
+  var app = new Vue({
+    el: '#app',
+    data: {
+      notice: '',
+      marquee: null,
+      type: 0,
+      show: false,
+      setting: {
+        bgPicked: '-1',
+        animateType: '1'
+      },
+      basicInfo: {},
+      customeVideo: '',
+      customePic: '',
+      selectId: '-1',
+      hbInfo: {},
+      orderData: null,
+      showQrcode: '',
+      customeQrcodes: [],
+      visible: {
+        qrcodeSetting: false
+      }
+    },
+    methods: {
+      goTo(url) {
+        window.location.href = window.location.origin + window.location.pathname + url + '?ht_id=' + barConfig.ht_id
+      },
+      changeBg (url, type, id) {
+        this.selectId = id
+        var type = ~~(type)
+        ajax(baseURL + '/weixin/screen/saveBackground', 'POST', { ht_id: barConfig.ht_id, type: type, background_id: id}).then((res) => {})
+        this.type = type
+        if (type == 2 ) {
+          this.customeVideo = url
+          this.$nextTick(() => {
+            bar.video && bar.video[0].play()
+          })
+        } else if (type == 1) {
+          this.customePic = url
+        }
+        //window.wtfCall.changeBg(JSON.stringify({url: url, type: type, id: id}))
+      },
+      visibleSet (str) {
+        var obj = JSON.parse(str)
+        if (this.visible.hasOwnProperty(obj.key)) {
+          this.visible[obj.key] = obj.value
+        }
+        //window.wtfCall.visibleSet(str)
+      },
+      editQrCode (index) {
+        this.$set(this.customeQrcodes[index], 'edit', true)
+        //window.wtfCall.editQrCode(JSON.stringify({index: index}))
+      },
+      setDefaultQrcode (index) {
+        ajax(baseURL + '/weixin/screen/setDefaultQrCode', 'POST', {ht_id: barConfig.ht_id, id: this.customeQrcodes[index].id}).then((res) => {
+          this.customeQrcodes.forEach((v) => {
+            v.is_default = 0
+          })
+          this.customeQrcodes[index].is_default = 1
+          this.showQrcode = this.customeQrcodes[index].img_url
+        })
+        //window.wtfCall.setDefaultQrcode(JSON.stringify({index: index}))
+      },
+      qrcodeInputBlur (index) {
+        var value = event.target.value
+        ajax(baseURL + '/weixin/screen/editQrCode', 'POST', { ht_id: barConfig.ht_id, id: this.customeQrcodes[index].id, name: value}).then((res) => {
+          this.customeQrcodes[index].name = value
+          this.customeQrcodes[index].edit = false
+        })
+        //var value = event.target.value
+        //window.wtfCall.qrcodeInputBlur(JSON.stringify({index: index, value: value}))
+      },
+      deleteCustomeQrcode (index) {
+        var _self = this
+        if (this.customeQrcodes[index].is_default == 1) {
+          layer.msg('请先设置其他二维码为默认', {icon: 0, time: 1500})
+          return false
+        }
+        var indexLayer = layer.confirm('确定要删除该二维码吗？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+          ajax(baseURL + '/weixin/screen/deleteQrCode', 'POST', { ht_id: barConfig.ht_id, id: _self.customeQrcodes[index].id}).then((res) => {
+            _self.customeQrcodes.splice(index, 1)
+            layer.close(indexLayer)
+            layer.msg('删除成功', {icon: 1, time: 1500})
+          })    
+        }, function(){
+        });
+        //window.wtfCall.deleteCustomeQrcode(JSON.stringify({index: index}))
+      }
+    },
+    computed: {
+      styleSrc () {
+        if (this.customePic) {
+          return {'background-image': 'url('+ this.$options.filters.prefixImageUrl(this.customePic) +')'}
+        } else {
+          return {'background-image': 'url('+ this.$options.filters.prefixImageUrl(this.basicInfo.bg[0].picUrl) +')'}
+        }
+      },
+      videoSrc () {
+        if (this.customeVideo) {
+          return this.$options.filters.prefixImageUrl(this.customeVideo)
+        } else {
+          return this.$options.filters.prefixImageUrl(this.basicInfo.bg[0].videoUrl)
+        }
+      },
+      filtersBg () {
+        var _self = this
+        if (this.basicInfo.ptBgs) {
+          if (this.setting.bgPicked != '-1') {
+            return this.basicInfo.ptBgs.filter(function(v) {
+              return v.type == ~~(_self.setting.bgPicked)
+            })
+          }
+        }
+      }
+    },
+    created: function() {
+      var _self = this
+      var p1 = ajax(baseURL + '/weixin/Screen/getHotelAllMsg', 'POST', { ht_id: barConfig.ht_id })
+      var p2 = ajax(baseURL + '/weixin/Screen/getNotice', 'POST', { ht_id: barConfig.ht_id })
+      var p3 = ajax(baseURL + '/weixin/screen/getQrCodeInfo', 'POST', { ht_id: barConfig.ht_id })
+      var p4 = ajax(baseURL + '/weixin/version/getNewVersion', 'POST', {type: 1})
+      var p = Promise.all([p1, p2, p3, p4])
+      p.then(function(results) {
+        // 设置版本
+        if (!isArray(results[3].result) && results[3].result.data) {
+          document.getElementById("version-tip").innerHTML = '当前版本：V' + results[3].result.data[0].version_num
+        }
+        _self.customeQrcodes = results[2].result
+        var default_Qrcode = results[2].result.find(function(v) {
+          return v.is_default == 1
+        })
+        _self.showQrcode = default_Qrcode && default_Qrcode.img_url
+        _self.notice = results[1].result ? results[1].result.content : ''
+        // 图片加载完回调
+        var preload = new imagePreload({
+          callback: window.init
+        })
+        var basicInfo = results[0].result
+
+        // 设置平台背景列表
+        app.basicInfo.ptBgs = basicInfo.pt_result
+        // 广告图
+        if (basicInfo.advert.screen) {
+          var adUrl = prefixImageUrl(basicInfo.advert.screen.url)
+          document.getElementById("adUrl").value = adUrl
+          preload.push(adUrl)
+        }
+  
+        // 设置title
+        document.title = basicInfo.ht_msg.name + '——牛霸霸屏'
+        app.basicInfo.logo = prefixImageUrl(basicInfo.ht_msg.logo)
+        // 设置二维码
+        app.basicInfo.qrcode = basicInfo.ht_msg.phone_er_url
+        // 设置背景 并判断默认是视频还是图片
+        if (barConfig.from != 'exe') {
+          app.setting.bgPicked = basicInfo.ht_msg.default_bg_type
+        }
+        app.basicInfo.bg = basicInfo.bg
+        if (isArray(basicInfo.bg) && basicInfo.bg.length > 0) {
+          preload.push(prefixImageUrl(basicInfo.bg[0].picUrl)) 
+          if (basicInfo.ht_msg.default_bg_type == '1') {
+            // 默认背景是图片
+            _self.type = 1
+            _self.selectId = basicInfo.bg[0].picId
+          } else if (basicInfo.ht_msg.default_bg_type == '2') {
+            // 默认背景是视频
+            _self.type = 2
+            _self.selectId = basicInfo.bg[0].videoId
+          }
+        }
+        preload.init()
+      });
+    },
+    mounted () {
+    },
+    filters: {
+      prefixImageUrl: function(url) {
+        if (!url) {
+          return
+        }
+        if (url.indexOf('http') === 0) {
+          return url
+        }
+        return baseURL + url
+      }
+    },
+    watch: {
+      type (newVal, oldVal) {
+        if (newVal == 2) {
+          bar.video && bar.video[0].play()
+        } else {
+          bar.video && bar.video[0].pause()
+        }
+      },
+      'setting.bgPicked'(newVal, oldVal) {
+        var _self = this
+        if (newVal == 0) {
+          _self.type = newVal
+        }
+      },
+      'setting.animateType'(newVal, oldVal) {
+        if (newVal > 0) {
+          window.toggleAnime(Number(newVal))
+          // 传递给客户端
+          //window.wtfCall.toggleAnime(JSON.stringify({type: Number(newVal)}))
+        }
+      }
+    }
+  })
+
+  window.init = function() {
+    window.addEventListener('message', function(e) {
+      switch (e.data.status) {
+        case 'open':
+          showTheme()
+          break;
+        case 'close':
+          hideTheme()
+          break;
+        case 'ready':
+          readySendMessage()
+          break;
+      }
+    })
+    app.show = true
+    app.$nextTick(function() {
+      if (isAppInit) {
+        return false
+      }
+      isAppInit = true
+      if (!bar.video) {
+        bar.video = $('#video')
+      }
+      if (!bar.hbVideo) {
+        bar.hbVideo = $('#videoHongbao')
+      }
+      if (!bar.hbEnd) {
+        bar.hbEnd = $('#hb_end')
+      }
+      if (!bar.hbPersonVideo) {
+        bar.hbPersonVideo = $('#videoHongbao_person')
+      }
+      if (!bar.giftVideo) {
+        bar.giftVideo = $('#videoGift_person')
+      }
+      bar.video[0].play()
+      bar.video.one('canplaythrough', function() {
+        initUserInterFace()
+      })
+      scaleQrcode()
+      app.marquee = $('.official-msg').css('width', $('#testmarquee').width()).marquee({
+        direction: 'left',
+        duplicated: false
+      })
+      
+      scaleSomeWin()
+      scaleWebContent()
+    })
+    
+    function initUserInterFace() {
+      // 显示广告
+      var $adPage = $('#ad-page')
+      $adPage[0].addEventListener('webkitTransitionEnd', adPageEnd)
+
+      function adPageEnd() {
+        if ($adPage.hasClass('out')) {
+          $adPage.remove()
+          getNewestMsg()
+          ajaxGetNewOrder()
+          ajaxDeleteMsg()
+          ajaxGetNotice()
+          $adPage[0].removeEventListener('webkitTransitionEnd', adPageEnd)
+        }
+      }
+      $adPage.css({ 'visibility': 'visible', 'background-image': 'url(' + document.getElementById("adUrl").value + ')' })
+
+      setTimeout(function() {
+        $('#loading-page').remove()
+        var count = 3
+        $('.count-label').text('广告' + count + '秒').show()
+        var timer = setInterval(function() {
+          count--
+          if (count == 0) {
+            clearInterval(timer)
+            $adPage.addClass('out')
+            setTimeout(function(){
+              var control = new controls()
+              control.init()
+            }, 3000)
+          } else {
+            $('.count-label').text('广告' + count + '秒')
+          }
+        }, 1000)
+      }, 300)
+    }
+
+    window.scroll1 = null
+    // 获取最新消息
+    var timeGetNewMsg = null
+    window.ajaxGetNewMsg = function() {
+      ajax(baseURL + '/weixin/Screen/getMaxMsg', 'POST', { ht_id: barConfig.ht_id, id: scroll1.getMaxId() }).then(function(res) {
+        if (isArray(res.result) && res.result.length > 0) {
+          if (scroll1.getDatas().length === 0 && Anitype == 2) {
+            window.scroll1.destory()
+            initGuidao(res.result)
+          } else {
+            if (Anitype == 2) {
+              scroll1.updateData(res.result)
+            } else {
+              if (!scroll1.isMove) {
+                scroll1.add(res.result, true)
+                scroll1.detectMove()
+              } else {
+                scroll1.updateData(res.result)
+              }
+            }
+          }
+        }
+        clearTimeout(timeGetNewMsg)
+        timeGetNewMsg = setTimeout(function() {
+          ajaxGetNewMsg()
+        }, 1000)
+      })
+    }
+
+    // 获取公告
+    var timeGetNotice = null
+    window.ajaxGetNotice = function() {
+      ajax(baseURL + '/weixin/Screen/getNotice', 'POST', { ht_id: barConfig.ht_id }).then(function(res) {
+        if (res.result.content != app.notice) {
+          console.log('change')
+          // 更新
+          app.notice = res.result.content
+          app.$nextTick(function() {
+            app.marquee.marquee('destroy')
+            app.marquee = $('.official-msg').css('width', $('#testmarquee').width()).marquee({
+              direction: 'left',
+              duplicated: false
+            })
+          })
+        }
+        clearTimeout(timeGetNotice)
+        timeGetNotice = setTimeout(function() {
+          ajaxGetNotice()
+        }, 10000)
+      })
+    }
+    // 获取首次渲染的数据
+    window.getNewestMsg = function() {
+      ajax(baseURL + '/weixin/Screen/getNewestMsg', 'POST', { ht_id: barConfig.ht_id, min_id: 0 }).then(function(res) {
+        if (Anitype == 2) {
+          initGuidao(res.result)
+          ajaxGetNewMsg()
+        } else if(Anitype == 1) {
+          scroll1 = new mmarquee({ datas: res.result })
+          ajaxGetNewMsg()
+        }
+      })
+    }
+
+    // 初始化3个轨道的数据
+    function initGuidao (data) {
+      window.scroll1 = new bridge(data)
+      $.each(scroll1.damuProperty, function(i, o) {
+        if (o.quenes.length <= 0) {
+          var val = scroll1.getNextData()
+          if (val != null && val != undefined) {
+            scroll1.add(val, i)
+          }
+        }
+      })
+    }
+
+    // 获取订单
+    var timeGetNewOrder = null
+    window.ajaxGetNewOrder = function() {
+      ajax(baseURL + '/weixin/Screen/getNewOrder', 'POST', { ht_id: barConfig.ht_id }).then(function(res) {
+        if (res.result && !isArray(res.result)) {
+          clearTimeout(timeGetNewOrder)
+          handleOrder(res.result)
+        } else if (isArray(res.result) && res.result.length == 0){
+          timeGetNewOrder = setTimeout(function() {
+            ajaxGetNewOrder()
+          }, 1000)
+        }
+      }).catch(function() {
+        clearTimeout(timeGetNewOrder)
+        timeGetNewOrder = setTimeout(function() {
+          ajaxGetNewOrder()
+        }, 1000)
+      })
+    }
+  }
+  // 获取删除的消息
+  var timeDeleteMsg = null
+  window.ajaxDeleteMsg = function() {
+    ajax(baseURL + '/weixin/Screen/getDelMsg', 'POST', { ht_id: barConfig.ht_id }).then(function(res) {
+      if (isArray(res.result) && res.result.length != 0){
+        ajax(baseURL + '/weixin/Screen/getNewestMsg', 'POST', { ht_id: barConfig.ht_id, min_id: 0 }).then(function(res2) {
+          if (window.scroll1) {
+            window.scroll1.deleteByIds(res.result)
+            window.scroll1.replaceData(res2.result)
+          }
+          clearTimeout(timeDeleteMsg)
+          timeDeleteMsg = setTimeout(function() {
+            ajaxDeleteMsg()
+          }, 1000)
+        })
+      } else {
+        clearTimeout(timeDeleteMsg)
+        timeDeleteMsg = setTimeout(function() {
+          ajaxDeleteMsg()
+        }, 1000)
+      }
+    })
+  }
+  
+  // 在大红包并且不是专属红包展示时请求
+  var timeGetHBEnd = null
+  window.ajaxHBEnd = function(data) {
+    ajax(baseURL + '/weixin/screen/hbInfoOnScreen', 'POST', data).then(function(res) {
+      clearTimeout(timeGetHBEnd)
+      if (res.result.rest_amount == 0) {
+
+        // 抢完
+        bar.hbVideo[0].pause()
+        $('#hbContainer').hide()
+        $('#hb_main').hide()
+        bar.hbVideo.off()
+        var restTime = bar.hbVideo[0].duration - bar.hbVideo[0].currentTime
+        bar.hbEnd.find('.thx-end-second').text(res.result.last_time + '秒抢完')
+        bar.hbEnd.show()
+        setTimeout(function(){
+          bar.hbEnd.hide()
+          ajaxGetNewOrder()
+        }, restTime * 1000)
+      } else {
+        timeGetHBEnd = setTimeout(function() {
+          ajaxHBEnd(data)
+        }, 1000)
+      }
+    }).catch(function() {
+      clearTimeout(timeGetHBEnd)
+      timeGetHBEnd = setTimeout(function() {
+        ajaxHBEnd(data)
+      }, 1000)
+    })
+  }
+
+  var postData = {}
+  function handleOrder(data) {
+    if (!data.hasOwnProperty('hb')) {
+      data.initiator_headimgurl = prefixImageUrl(data.initiator_headimgurl)
+      data.img = prefixImageUrl(data.img)
+      data.sendee_nickname = data.sendee_nickname == null ? '全场观众' : data.sendee_nickname
+      postData = data
+      if (data.odr_type == 1) {
+        data.sendee_headimgurl = data.sendee_headimgurl == null ? './animations/common_img/all.png' : prefixImageUrl(data.sendee_headimgurl)
+        app.orderData = data
+        app.$nextTick(function() {
+          showNewGift(data.odr_show_time)
+        })
+      } else {
+        data.sendee_headimgurl = data.sendee_headimgurl == null ? '../common_img/all.png' : prefixImageUrl(data.sendee_headimgurl)
+        $('#new_theme').attr('src', data.url)
+      }
+    } else {
+      app.hbInfo = data
+      app.$nextTick(function(){
+        // 大红包或专属红包要显示
+        if (data.hb.user.nickname) {
+          // 专属并且大红包
+          showHbRainForBigPerson()
+        } else {
+          // 普通大红包
+          showHbRainBig()
+        }
+      })   
+    }
+  }
+  // 显示大红包
+  function showHbRainBig () {
+    var key = bar.hbVideo.attr('data-key')
+    if (window.BlobVideos[key]) {
+      bar.hbVideo.attr('src', window.BlobVideos[key])
+      bar.hbVideo[0].currentTime = 0
+      bar.hbVideo[0].play()
+      $('#hbContainer').show()
+    } else {
+      bar.hbVideo.attr('src', bar.hbVideo.attr('data-src'))
+      bar.hbVideo[0].currentTime = 0
+      bar.hbVideo[0].play()
+      bar.hbVideo.one('canplaythrough', function() {
+        bar.hbVideo[0].currentTime = 0
+        $('#hbContainer').show()
+      })
+    }
+    var flag1 = false, flag2 = false
+    bar.hbVideo.on('timeupdate', function(event) {
+      // 大于5秒时开始请求几秒被抢完
+      if (bar.hbVideo[0].currentTime > 5 && !flag1) {
+        flag1 = true
+        ajaxHBEnd({ht_id: barConfig.ht_id, hb_id: app.hbInfo.hb.id})
+      }
+      if (bar.hbVideo[0].currentTime > 7 && !flag2) {
+        flag2 = true
+        $('#hb_main').fadeIn(300)
+      }
+    })
+    bar.hbVideo.one('ended', function(event) {
+      clearTimeout(timeGetHBEnd)
+      $('#hbContainer').hide()
+      $('#hb_main').hide()
+      bar.hbVideo.off()
+      ajaxGetNewOrder()
+    })
+  }
+  // 显示专属红包
+  function showHbRainForBigPerson () {
+    var key = bar.hbPersonVideo.attr('data-key')
+    if (window.BlobVideos[key]) {
+      bar.hbPersonVideo.attr('src', window.BlobVideos[key])
+      bar.hbPersonVideo[0].play()
+      $('#hbContainer2').show()
+      $('#hb_person').addClass('animated bounceIn')
+    } else {
+      bar.hbPersonVideo.attr('src', bar.hbPersonVideo.attr('data-src'))
+      bar.hbPersonVideo[0].play()
+      bar.hbPersonVideo.one('canplaythrough', function() {
+        bar.hbPersonVideo[0].currentTime = 0
+        $('#hbContainer2').show()
+        $('#hb_person').addClass('animated bounceIn')
+      })
+    }
+
+    bar.hbPersonVideo.one('ended', function(event) {
+      $('#hbContainer2').hide()
+      $('#hb_person').removeClass('animated bounceIn')
+      bar.hbPersonVideo.off()
+      ajaxGetNewOrder()
+    })
+  }
+  // 显示新版礼物
+  function showNewGift (time) {
+    var key = bar.giftVideo.attr('data-key')
+    if (window.BlobVideos[key]) {
+      bar.giftVideo.attr('src', window.BlobVideos[key])
+      bar.giftVideo[0].play()
+      $('#giftContainer').show()
+      $('#giftContainer_person').addClass('animated bounceIn')
+      setTimeout(function(){
+        $('#giftContainer').hide()
+        $('#giftContainer_person').removeClass('animated bounceIn')
+        bar.giftVideo.off()
+        ajaxGetNewOrder()
+      }, time * 1000)
+    } else {
+      bar.giftVideo.attr('src', bar.giftVideo.attr('data-src'))
+      bar.giftVideo[0].play()
+      bar.giftVideo.one('canplaythrough', function() {
+        bar.giftVideo[0].currentTime = 0
+        $('#giftContainer').show()
+        $('#giftContainer_person').addClass('animated bounceIn')
+        setTimeout(function(){
+          $('#giftContainer').hide()
+          $('#giftContainer_person').removeClass('animated bounceIn')
+          bar.giftVideo.off()
+          app.orderData = null
+          ajaxGetNewOrder()
+        }, time * 1000)
+      })
+    }
+    
+  }
+
+  function readySendMessage() {
+    $('#new_theme')[0].contentWindow.postMessage(postData, window.location.origin)
+  }
+
+  // 切换弹幕还是滚动
+  window.toggleAnime = function(type) {
+    Anitype = type
+    resetDataFixLayout()
+  }
+  // 重新请求数据 重设布局
+  function resetDataFixLayout () {
+    window.scroll1.destory()
+    clearTimeout(window.timeGetNewMsg)
+    window.getNewestMsg()
+    window.ajaxGetNewMsg()
+  }
+  // 监听窗口改变 按比例缩放大小
+  window.addEventListener('resize', debounce(function(){
+    if (window.scroll1) {
+      app.marquee.marquee('destroy')
+      app.marquee = $('.official-msg').css('width', $('#testmarquee').width()).marquee({
+        direction: 'left',
+        duplicated: false
+      })
+      resetDataFixLayout()
+      scaleQrcode()
+      scaleSomeWin()
+      scaleWebContent()
+    }
+  }, 500))
+
+  function scaleSomeWin () {
+    var windowWidth = window.innerWidth
+    var windowHeight = window.innerHeight
+    var scale = 1
+    if (windowWidth > windowHeight) {
+      scale = windowHeight / 1080
+      //css = {width: parseInt(windowHeight * 1920 / 1080) + 'px', height: windowHeight + 'px'}
+    } else {
+      scale = windowWidth / 1920
+      //css = {width: windowWidth + 'px', height: parseInt(windowWidth * 1080 / 1920) + 'px'}
+    }
+    $('.scaleContainer').css('transform', 'scale(' + scale + ')')
+  }
+
+  function scaleWebContent () {
+    var windowWidth = window.innerWidth
+    var windowHeight = window.innerHeight
+    var scale = 1
+    var scaleW = windowWidth / 1920
+    var scaleH = windowHeight / 1080
+    scale = Math.min(scaleW, scaleH)
+    $('.webscale').css('transform', 'scale(' + scale + ')')
+  }
+
+  function showTheme() {
+    $("#new_theme_baping").show();
+  }
+
+  function hideTheme() {
+    $("#new_theme_baping").hide();
+    ajaxGetNewOrder();
+  }
+
+  var orginWinW = 0 
+  var orginWinH = 0
+
+  function scaleQrcode () {
+    var winW = window.innerWidth
+    var winH = window.innerHeight
+    if (orginWinW == 0) {
+      orginWinW = winW
+      orginWinH = winH
+    } else {
+      var cutLeft = winW - orginWinW
+      var cutTop = winH - orginWinH
+      var nowTop = $('#qrcode-wrap').css('top').replace('px', '')
+      var nowLeft = $('#qrcode-wrap').css('left').replace('px', '')
+      if ($('#qrcode-wrap').css('z-index') != 'auto') {
+        $('#qrcode-wrap').css({'left': Number(nowLeft) + Number(cutLeft) + 'px', 'top': Number(nowTop) + Number(cutTop) + 'px'})
+      } 
+      orginWinW = winW
+      orginWinH = winH
+    }
+    if (winW / winH > 1.4) {
+      var toH = winH / 5
+      var qrcode = $('#qrcode-box')
+      var scale = Number(toH / qrcode.height()).toFixed(2)
+      $('#qrcode-box').css('-webkit-transform', 'scale('+ scale +')')
+    }
+  }
+  // 跟客户端交互
+  /*window.wtfCall = {
+    toggleAnime (str) {
+      var obj = JSON.parse(str)
+      Anitype = obj.type
+      resetDataFixLayout()
+    },
+    changeBg (str) {
+      var obj = JSON.parse(str)
+      app.selectId = obj.id
+      var type = ~~(obj.type)
+      ajax(baseURL + '/weixin/screen/saveBackground', 'POST', { ht_id: barConfig.ht_id, type: type, background_id: obj.id}).then((res) => {})
+      app.type = type
+      if (type == 2 ) {
+        app.customeVideo = obj.url
+        app.$nextTick(() => {
+          bar.video && bar.video[0].play()
+        })
+      } else if (type == 1) {
+        app.customePic = obj.url
+      }
+    },
+    visibleSet (str) {
+      var obj = JSON.parse(str)
+      if (app.visible.hasOwnProperty(obj.key)) {
+        app.visible[obj.key] = obj.value
+      }
+    },
+    editQrCode (str) {
+      var obj = JSON.parse(str)
+      app.$set(app.customeQrcodes[obj.index], 'edit', true)
+    },
+    setDefaultQrcode (str) {
+      var obj = JSON.parse(str)
+      ajax(baseURL + '/weixin/screen/setDefaultQrCode', 'POST', {ht_id: barConfig.ht_id, id: app.customeQrcodes[obj.index].id}).then((res) => {
+        app.customeQrcodes.forEach((v) => {
+          v.is_default = 0
+        })
+        app.customeQrcodes[obj.index].is_default = 1
+        app.showQrcode = app.customeQrcodes[obj.index].img_url
+      })
+    },
+    qrcodeInputBlur (str) {
+      var obj = JSON.parse(str)
+      var value = event.target.value
+      ajax(baseURL + '/weixin/screen/editQrCode', 'POST', { ht_id: barConfig.ht_id, id: app.customeQrcodes[obj.index].id, name: obj.value}).then((res) => {
+        app.customeQrcodes[obj.index].name = obj.value
+        app.customeQrcodes[obj.index].edit = false
+      })
+    },
+    deleteCustomeQrcode (str) {
+      var obj = JSON.parse(str)
+      var _self = app
+      if (app.customeQrcodes[obj.index].is_default == 1) {
+        layer.msg('请先设置其他二维码为默认', {icon: 0, time: 1500})
+        return false
+      }
+      var indexLayer = layer.confirm('确定要删除该二维码吗？', {
+        btn: ['确定','取消'] //按钮
+      }, function(){
+        ajax(baseURL + '/weixin/screen/deleteQrCode', 'POST', { ht_id: barConfig.ht_id, id: _self.customeQrcodes[obj.index].id}).then((res) => {
+          _self.customeQrcodes.splice(obj.index, 1)
+          layer.close(indexLayer)
+          layer.msg('删除成功', {icon: 1, time: 1500})
+        })    
+      }, function(){
+      });
+    }
+  }*/
+  </script>
+</body>
+
+</html>

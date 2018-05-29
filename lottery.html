@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>牛霸霸屏</title>
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+  <meta http-equiv=X-UA-Compatible content=“IE=EmulateIE10”>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link rel="stylesheet" type="text/css" href="css/reset.css">
+  <link rel="stylesheet" type="text/css" href="css/lottery.css?v=3">
+  <link rel="stylesheet" type="text/css" href="css/fancySelect.css">
+  <script type="text/javascript">
+  var baseURL = 'http://xnb.siweiquanjing.com'
+  </script>
+</head>
+
+<body>
+  <video autoplay="true" class="full" src="http://xnb.siweiquanjing.com/uploads/hotel/20180313/907c5afb5ad84534b694e4b91331a8a4.webm" controls="false" loop="true" style="position: absolute;left: 0; top: 0;z-index: -1;width: 100%;height: 100%;object-fit: cover;"></video>
+  <div class="app hide">
+    <!-- <canvas id="canvas"></canvas> -->
+    <div class="mask-layer" style="display: none;"></div>
+    <div id="back" class="scaleContainer">返回</div>
+    <div class="fullCenter scaleContainer">
+      <div class="app-main pr">
+        <h1 class="title"></h1>
+        <div class="app-main-content">
+          <div class="app-left">
+            <div class="left-item">
+              <p class="t1">当前参与抽奖人数</p>
+              <div class="count-people-now" id="count-people-now">0人</div>
+            </div>
+            <div class="left-item">
+              <p class="t1">本轮抽奖奖项</p>
+              <select class="c-select" data-params="curPrize">
+              </select>
+              <!-- <div class="count-people-now">345人</div> -->
+            </div>
+            <div class="left-item">
+              <p class="t1">奖项名额</p>
+              <div class="number-input tc">
+                <i class="iconfont cal-icon substract">&#xe728;</i>
+                <input type="number" name="curPrizeNum" id="curPrizeNum" value="1">
+                <i class="iconfont cal-icon add">&#xe620;</i>
+              </div>
+              <!-- <select class="c-select" data-params="curPrizeNum">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select> -->
+              <!-- <div class="count-people-now">345人</div> -->
+            </div>
+          </div>
+          <div class="app-middle">
+            <div class="avatar-change-box">
+              <p class="prize-name pr"><b id="prize-name">特等奖</b><span class="prize-count">0/1</span></p>
+              <div class="lottery-item nobody">
+                <div class="avatar-container tc">
+                  <img src="" class="avatar" style="display: none;">
+                </div>
+                <p class="cur-nickname tc line1"></p>
+              </div>
+            </div>
+            <button class="lottery-btn">开始抽奖</button>
+          </div>
+          <div class="app-right">
+            <div class="t1 pr">中奖名单<i class="iconfont mingdan-tip">&#xe61b;</i>
+              <div class="right-actions"><i class="iconfont luck-show">&#xe61e;</i></div>
+            </div>
+            <div class="scroll-prize-winner">
+              <ul>
+              </ul>
+            </div>
+            <div class="tc pr" style="margin-top: 20px;">
+              <button class="btn btn-md delete-all">清空名单</button>
+              <button class="btn btn-md btn-md-confirm">确认名单</button><i class="iconfont confirm-tip">&#xe61b;</i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="qrcode-right-top scaleContainer" style="cursor: pointer;">
+      <img src="" class="qrcode">
+      <i class="iconfont expand-icon">&#xe61c;</i>
+    </div>
+    <div class="winner-window scaleContainer hide">
+      <div class="winner-window-main pr" style="height: 100%;display: none;">
+        <!-- <div class="light"></div>
+        <div class="get-msg-tip">恭喜，中奖了！</div>
+        <img src="http://thirdwx.qlogo.cn/mmopen/fMt9nBQrBQQ9yicHAiaJK3PRRiat511U5AH8E3aCarBzR6pBwicyMUSJH5M9pOlOPYz8wRmbBw5JnfbxMtRCJlz9D4aunEZOUv3R/132" id="cur-winner-avatar">
+        <span class="level level-2"></span>
+        <p class="get-msg-name">会飞的大象</p>
+        <div class="get-msg-prize">一等奖</div>
+        <div class="close-get-box" data-target="winner-window"><i class="iconfont">&#xe61d;</i></div> -->
+      </div>
+    </div>
+    <div class="qrcode-window scaleContainer hide">
+      <div class="qrcode-window-main pr" style="height: 100%;display: block;">
+        <img src="http://thirdwx.qlogo.cn/mmopen/fMt9nBQrBQQ9yicHAiaJK3PRRiat511U5AH8E3aCarBzR6pBwicyMUSJH5M9pOlOPYz8wRmbBw5JnfbxMtRCJlz9D4aunEZOUv3R/132" id="qrcode-big" class="qrcode">
+        <p class="qrcode-concern tc">扫码关注公众号，<span class="our-tip">点击底栏菜单“微上墙”进入抽奖页面，</span>参与抽奖</p>
+        <div class="close-get-box" data-target="qrcode-window" style="bottom: -124px;"><i class="iconfont">&#xe61d;</i></div>
+      </div>
+    </div>
+    <div class="lucky-window scaleContainer hide">
+      <h3 class="lucky-title">今日幸运儿</h3>
+      <div class="lucky-list">
+        <ul>
+          
+        </ul>
+        <div id="no-result" class="tc hide">
+          <p>当天无确认过的中奖信息</p>
+          <p>提示：确认过的中奖名单将保留7天</p>
+        </div>
+        <div class="loading-container" id="loading">
+          <div class="dot"><span></span></div>
+          <div class="dot"><span></span></div>
+          <div class="dot"><span></span></div>
+          <div class="dot"><span></span></div>
+          <div class="dot"><span></span></div>
+          <div class="dot"><span></span></div>
+          <div class="dot"><span></span></div>
+          <div class="dot"><span></span></div>
+        </div>
+        <svg id="loading-svg">
+          <defs>
+            <filter id="goo">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur>
+              <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -9" result="goo"></feColorMatrix>
+              <feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite>
+            </filter>
+          </defs>
+        </svg>
+      </div>
+      <div class="tc before-day-after">
+      </div>
+      <div class="close-get-box" data-target="luck-window" style="bottom: 30px;"><i class="iconfont">&#xe61d;</i></div>
+    </div>
+  </div>
+  <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="js/fancySelect.js"></script>
+  <script type="text/javascript" src="js/anime.min.js"></script>
+  <script src="vendor/layer/layer.js"></script>
+  <script type="text/javascript" src="js/func.js?v=1"></script>
+  <!-- <script type="text/javascript" src="js/fireworks.js"></script> -->
+  <script type="text/javascript">
+  // 禁止右键菜单
+  document.oncontextmenu=new Function("event.returnValue=false;");
+  document.onselectstart=new Function("event.returnValue=false;");
+
+  window.addEventListener('resize', function() {
+    scaleSomeWin()
+  })
+
+  function scaleSomeWin() {
+    var windowWidth = window.innerWidth
+    var windowHeight = window.innerHeight
+    var scale = 1
+    var scaleW = windowWidth / 1920
+    var scaleH = windowHeight / 1080
+    scale = Math.min(scaleW, scaleH)
+    $('.scaleContainer').css('transform', 'scale(' + scale + ')')
+  }
+  $(function() {
+    var obj = {
+      ht_id: getQueryString("ht_id"),
+      layer: $('.mask-layer'),
+      winnerWindow: $('.winner-window'),
+      qrcodeWindow: $('.qrcode-window'),
+      luckyWindow: $('.lucky-window'),
+      btn: $('.lottery-btn'),
+      inputNum: $('#curPrizeNum'),
+      curPrize: 0,
+      curPrizeNum: 1,
+      curSelect: 0,
+      disableInput: false
+    }
+    var responseDatas = {
+      peoples: [],
+      prizes: [],
+      records: [],
+      weekData: []
+    }
+
+    var p1 = ajax(baseURL + '/weixin/screen/getAwardList', 'POST', { ht_id: obj.ht_id })
+    var p2 = ajax(baseURL + '/weixin/screen/getNewestCj', 'POST', { ht_id: obj.ht_id })
+    var p = Promise.all([p1, p2])
+    p.then(function(results) {
+      if (isArray(results[0].result)) {
+        obj.curPrize = results[0].result[0].id
+        responseDatas.prizes = results[0].result
+        formatPrize(results[0].result)
+      }
+
+      $('.qrcode').attr('src', results[1].result.qrCode)
+      responseDatas.records = results[1].result.record
+      formatWinner(responseDatas.records)
+      if (results[1].result.is_merchant == 1) {
+        $('.our-tip').remove()
+      }
+      $('.title').text(results[1].result.hotel_name + '·现场抽奖')
+      document.title = results[1].result.hotel_name + '——抽奖现场'
+      ajaxLottery()
+    })
+
+    var ajaxLotteryTimer = null
+    var ajaxLottery = function() {
+      ajax(baseURL + '/weixin/screen/isNewestCj', 'POST', { ht_id: obj.ht_id }).then((res) => {     
+        if (res.result.length == 0) {
+          $('#count-people-now').text('0人')
+          $('.app').removeClass('hide')
+        } else {
+          if (!lotteryObj) {
+            lotteryObj = new lottery(res.result.list)
+            //lotteryObj.set()
+            $('.app').removeClass('hide')
+          }
+            lotteryObj && lotteryObj.update(res.result.list)
+          responseDatas.peoples = res.result.list
+          $('#count-people-now').text(res.result.num + '人')
+        }
+        
+        clearTimeout(ajaxLotteryTimer)
+        ajaxLotteryTimer = setTimeout(function() {
+          ajaxLottery()
+        }, 1000)
+      }).catch(() => {
+        clearTimeout(ajaxLotteryTimer)
+        ajaxLotteryTimer = setTimeout(function() {
+          ajaxLottery()
+        }, 1000)
+      })
+    }
+    
+    var mySelect = null
+
+    // 二维码放大缩小
+    var scale = 1
+    $('#qrcode-big').on('mousewheel DOMMouseScroll', function(e) {
+      var delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) ||
+        (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1))
+      if (delta > 0) {
+        // 向上滚
+        scale += 0.2
+        //$('#qrcode-wrap').css({'transform': 'scale('+scale+')', 'transform-origin': '50% 50% 0px'})
+        anime({
+          targets: '#qrcode-big',
+          scale: scale
+        })
+      } else if (delta < 0) {
+        // 向下滚
+        scale = scale - 0.2 <= 0.2 ? 0.2 : scale - 0.2
+        anime({
+          targets: '#qrcode-big',
+          scale: scale
+        })
+      }
+    })
+    scaleSomeWin()
+
+    $('body').on('click', '.close-get-box', function() {
+      var _target = $(this).attr('data-target')
+      if (_target == 'qrcode-window') {
+        // 关闭二维码窗口
+        obj.layer.fadeOut(300)
+        obj.qrcodeWindow.addClass('hide')
+      } else if (_target == 'winner-window') {
+        $('.light').removeClass('rotate')
+        obj.layer.fadeOut(300)
+        $('.winner-window-main').removeClass('animated bounceIn').addClass('hide')
+        obj.winnerWindow.addClass('hide')
+      } else if (_target == 'luck-window') {
+        obj.layer.fadeOut(300)
+        obj.luckyWindow.addClass('hide')
+      }
+      setTimeout(function() {
+        if (obj.curSelect == 0) {
+          scene = 'prepare'
+        } else {
+          scene = 'ready'
+        }
+        
+      }, 300)
+    })
+
+    // 展开二维码
+    $('.qrcode-right-top').on('click', function() {
+      scene = 'qrcode'
+      obj.layer.fadeIn(300)
+      obj.qrcodeWindow.removeClass('hide')
+    })
+
+    // 删除单个
+    $('body').on('click', '.prize-delete', function(event) {
+      var _self = this
+      var _index = $(_self).parent().index()
+      var id = responseDatas.records[_index].id
+      ajax(baseURL + '/weixin/screen/deleteAward', 'POST', { ht_id: obj.ht_id, id: id}).then((res) => {
+        responseDatas.records.splice(_index, 1)
+        $('#pItem' + id).remove()
+      })
+      event.preventDefault();
+    });
+
+    // 加减法
+    $('.number-input').on('click', '.cal-icon', function() {
+      if (obj.disableInput) {
+        return false
+      }
+      var nV = obj.inputNum.val()
+      var hasClass = $(this).hasClass('add')
+      if (hasClass) {
+        // 添加
+        obj.inputNum.val(~~(nV) + 1)
+        obj.curPrizeNum = ~~(nV) + 1
+      } else {
+        // 删除
+        if (~~(nV) > 1) {
+          obj.inputNum.val(~~(nV) - 1)
+          obj.curPrizeNum = ~~(nV) - 1
+        }
+      }
+      update()
+    })
+
+    obj.inputNum.on('blur', function() {
+      if (!$(this).val()) {
+        $(this).val(1)
+      }
+      obj.curPrizeNum = ~~($(this).val())
+      update()
+    })
+
+    // back
+    $('#back').on('click',  function(event) {
+      window.location.href = baseURL + '/screen/?ht_id=' + obj.ht_id
+      event.preventDefault();
+    });
+
+    // tips hover  mingdan-tip
+    var mingdanTip = null
+    var confirmTip = null
+    $('.mingdan-tip').hover(function() {
+      mingdanTip = layer.tips('中奖名单显示当天的中奖用户，名单上的用户当天不会再重复中奖', '.mingdan-tip', {
+        tips: 1
+      });
+    }, function() {
+      layer.close(mingdanTip)
+    });
+    $('.confirm-tip').hover(function() {
+      confirmTip = layer.tips('确认后的中奖名单将保留7天。删除和清空未确认中奖名单的中奖用户当天可继续参与抽奖，已确认中奖的用户当天不会再重复中奖', '.confirm-tip', {
+        tips: 1
+      });
+    }, function() {
+      layer.close(confirmTip)
+    });
+
+    // 清空所有
+    $('body').on('click', '.delete-all', function(event) {
+      // 先判断名单里有没有未确认的名单 如果有 另外提示
+      var _self = this
+      if (isExsitNoConfirmRecord) {
+        var indexLayer = layer.confirm('该名单未确认保存，是否确定清空？提示：清空后，名单里的用户当天可继续参与抽奖', {
+          maxWidth: 600,
+          btn: ['确定', '取消'] //按钮
+        }, function() {
+          var ids = []
+          responseDatas.records.forEach(function(v) {
+            ids.push(v.id)
+          })
+          ids = ids.join(',')
+          ajax(baseURL + '/weixin/screen/qingKong', 'POST', { ht_id: obj.ht_id, record_ids: ids}).then((res) => {
+            $('.scroll-prize-winner ul').empty()
+            layer.close(indexLayer)
+            responseDatas.records = []
+          })
+          
+        }, function() {});
+      } else {
+        // 直接清空
+        var ids = []
+          responseDatas.records.forEach(function(v) {
+            ids.push(v)
+          })
+          ids = ids.join(',')
+          ajax(baseURL + '/weixin/screen/qingKong', 'POST', { ht_id: obj.ht_id, record_ids: ids}).then((res) => {
+            $('.scroll-prize-winner ul').empty()
+            layer.close(indexLayer)
+            responseDatas.records = []
+          })
+      }
+      
+      event.preventDefault();
+    });
+
+    // 确认名单
+    $('.btn-md-confirm').on('click', function(event) {
+      if (responseDatas.records.length === 0) {
+        return false
+      }
+      var _self = this
+      var indexLayer = layer.confirm('确定要提交获奖名单吗？', {
+        btn: ['确定', '取消'] //按钮
+      }, function() {
+        var ids = []
+        responseDatas.records.forEach(function(v) {
+          ids.push(v.id)
+        })
+        ids = ids.join(',')
+        ajax(baseURL + '/weixin/screen/confirmChouj', 'POST', { ht_id: obj.ht_id, record_ids : ids}).then((res) => {
+          layer.close(indexLayer)
+          layer.msg('提交成功', { icon: 1, time: 1500 })
+        })
+      }, function() {});
+      event.preventDefault();
+    });
+
+    // 显示今日幸运儿
+    $('.luck-show').on('click', function(event) {
+      scene = 'lucky'
+      // generate7days()
+      // lucky-list < 6 tc
+      obj.layer.fadeIn(300)
+      $('.lucky-list ul').empty()
+      $('#loading').show()
+      ajax(baseURL + '/weixin/screen/getWeeklyAward', 'POST', {ht_id: obj.ht_id}).then((res) => {
+        responseDatas.weekData = res.result
+        generate7days()
+        $('#loading').hide()
+        $('.day').eq(0).trigger('click')
+      })
+      obj.luckyWindow.removeClass('hide')
+      event.preventDefault();
+    });
+
+    // 点击日期读取
+    $('.before-day-after').on('click', 'a', function(event) {
+      $(this).siblings('a').removeClass('on')
+      $(this).addClass('on')
+      var _index = $(this).attr('data-index')
+      if (responseDatas.weekData[_index]) {
+        if (responseDatas.weekData[_index].record.length === 0) {
+          $('#no-result').removeClass('hide')
+        } else {
+          $('#no-result').addClass('hide')
+        }
+        formatLuckHTML(responseDatas.weekData[_index].record)
+      }
+      /*$('.lucky-list ul').empty()
+      $('#loading').show()*/
+      event.preventDefault();
+    });
+
+    var isRuning = false
+    var scene = 'ready'
+    var lotteryObj = null
+    obj.btn.on('click', function() {
+      lotteryBtnClick()
+    })
+
+    // 监听回车事件
+    $(document).on('keyup', function(event){
+      if(event.keyCode ==13){
+        switch(scene) {
+          case 'ready':
+          obj.btn.trigger('click');
+          break;
+          case 'prepare':
+          obj.btn.trigger('click');
+          break;
+          case 'qrcode':
+          $('.close-get-box[data-target="qrcode-window"]').trigger('click');
+          break;
+          case 'lucky':
+          $('.close-get-box[data-target="lucky-window"]').trigger('click');
+          break;
+          case 'winner':
+          $('.close-get-box[data-target="winner-window"]').trigger('click');
+          break;
+        }
+        $("#submit").trigger("click")
+      }
+    });
+
+    function isExsitNoConfirmRecord () {
+      return responseDatas.records.some((v) => v.status == 1)
+    }
+
+    function formatLuckHTML (data) {
+      var _html = ''
+      data.forEach((v) => {
+        v.headimgurl = prefixImageUrl(v.headimgurl)
+        var tag = getTagClass(v.name)
+        _html += `<li class="lucky-item">
+            <img src="${v.headimgurl}" class="radius luck-avatar">
+            <p class="line1 luck-nickname tc">${v.nickname}</p>
+            <span class="prize-tag ${tag}">${v.name}</span>
+          </li>`
+      })
+      $('.lucky-list ul').html(_html)
+    }
+
+    function generate7days() {
+      /*var myDate = new Date();
+      myDate.setDate(myDate.getDate() - 6);
+      var dateArray = [];
+      var dateTemp;
+      var flag = 1;
+      for (var i = 0; i < 7; i++) {
+        dateTemp = (myDate.getFullYear() + '-' + myDate.getMonth() + 1) + "-" + myDate.getDate();
+        var text = (myDate.getMonth() + 1) + '月' + myDate.getDate() + '号'
+        dateArray.unshift({ date: dateTemp, text: text });
+        myDate.setDate(myDate.getDate() + flag);
+      }*/
+      var _html = ''
+      responseDatas.weekData.forEach(function(v, i) {
+        _html += `<a href="" class="day" data-index="${i}">${v.day}</a>`
+      })
+      $('.before-day-after').html(_html)
+    }
+
+    function update() {
+      var find = responseDatas.prizes.find(function(v) {
+        return v.id == obj.curPrize
+      })
+      find && $('#prize-name').text(find.name)
+      find && $('.prize-count').text(obj.curSelect + '/' + obj.curPrizeNum)
+    }
+
+    function lotteryBtnClick() {
+      if (responseDatas.peoples.length < obj.curPrizeNum) {
+        layer.msg('参与人数不足', { icon: 0, time: 1500 })
+        return false
+      } else {
+        if (!isRuning && scene != 'prepare') {
+          ajax(baseURL + '/weixin/screen/canChouJ', 'POST', {ht_id: obj.ht_id}).then((res) => {
+            if (res.code == '306000') {
+              update()
+              isRuning = true
+              obj.btn.text('停')
+              mySelect.trigger('disable')
+              $('.number-input').addClass('disabled')
+              obj.disableInput = true
+              lotteryObj.start()
+            } else {
+              layer.msg(res.result, { icon: 2, time: 1500 })
+            }
+          })
+        } else if (!isRuning && scene == 'prepare') {
+          scene = 'ready'
+          obj.btn.text('开始抽奖')
+          obj.curSelect = 0
+          update()
+          $('.lottery-item').addClass('nobody')
+          $('.avatar').hide()
+        } else {
+          obj.curSelect++
+          lotteryObj.stop()
+          update()
+          if (~~(obj.curPrizeNum == obj.curSelect)) {
+            scene = 'prepare'
+            obj.curSelect = 0
+            mySelect.trigger('enable')
+            $('.number-input').removeClass('disabled')
+            obj.disableInput = false
+            obj.btn.text('继续下一轮')
+          } else {
+            obj.btn.text('继续抽奖')
+          }
+          isRuning = false
+        }
+      }
+    }
+
+    function fullScreenWinner(data) {
+      scene = 'winner'
+      data.headimgurl = prefixImageUrl(data.headimgurl)
+      obj.layer.fadeIn(300)
+      $('.winner-window').removeClass('hide')
+      $('.winner-window-main').html(`<div class="light"></div>
+        <div class="get-msg-tip">恭喜，中奖了！</div>
+        <img src="${data.headimgurl}" id="cur-winner-avatar" class="level-${data.mc_level_id}">
+          <span class="level level-${data.mc_level_id}"></span>
+          <p class="get-msg-name">${data.nickname}</p>
+          <div class="get-msg-prize">${data.name}</div>
+          <div class="close-get-box" data-target="winner-window"><i class="iconfont">&#xe61d;</i></div>`).addClass('animated bounceIn').show()
+      setTimeout(function() {
+        $('.light').addClass('rotate')
+      }, 800);
+    }
+
+    function formatPrize(data) {
+      var _html = ''
+      data.forEach(function(v) {
+        _html += `<option value=${v.id}>${v.name}</option>`
+      })
+      mySelect = $('.c-select')
+      mySelect.append(_html)
+      mySelect.fancySelect()
+      mySelect.on('change.fs', function() {
+        $(this).trigger('change.$');
+      })
+      mySelect.on('change', function() {
+        obj[$(this).attr('data-params')] = $(this).val()
+        update()
+      })
+    }
+
+    function getTagClass (name) {
+      var tag = ''
+      switch (name) {
+        case '特等奖':
+          tag = 'tag0'
+          break;
+        case '一等奖':
+          tag = 'tag1'
+          break;
+        case '二等奖':
+          tag = 'tag2'
+          break;
+        case '三等奖':
+          tag = 'tag3'
+          break;
+        case '四等奖':
+          tag = 'tag4'
+          break;
+      }
+      return tag
+    }
+
+    function formatWinner(data) {
+      var arr = []
+      if (!isArray(data)) {
+        arr.push(data)
+      } else {
+        arr = data
+      }
+      var _html = ''
+      arr.forEach(function(v) {
+        v.headimgurl = prefixImageUrl(v.headimgurl)
+        var tag = getTagClass(v.name)
+        _html += `<li class="prize-winner-item" id="pItem${v.id}">
+                  <img src="${v.headimgurl}" class="winner-avatar">
+                  <div class="prize-info">
+                    <p class="winner-nickname line1">${v.nickname}</p>
+                    <span class="prize-tag ${tag}">${v.name}</span>
+                  </div>
+                  <div class="prize-delete">
+                    <i class="iconfont">&#xe61d;</i>
+                  </div>
+                </li>`
+      })
+
+      $('.scroll-prize-winner ul').prepend(_html)
+    }
+
+    var lottery = function(data) {
+      this.data = data
+      this.time = 30
+      this.timer = null
+      this.selected = []
+    }
+    lottery.prototype.start = function() {
+      $('.lottery-item').removeClass('nobody')
+      var _self = this
+      this.timer = setInterval(function() {
+        _self.selected = []
+        _self.set()
+      }, this.time)
+    }
+    lottery.prototype.set = function(data) {
+      var _self = this
+      $('.lottery-item').each(function(index, el) {
+        var people = null
+        if (!data) {
+          var d = _self.getRandomData()
+          people = _self.data[d]
+        } else {
+          people = data
+        }
+        if (people) {
+          people.headimgurl = prefixImageUrl(people.headimgurl)
+          $(el).find('img').attr('src', people.headimgurl).show()
+          $(el).find('.cur-nickname').text(people.nickname)
+        }
+      })
+    }
+    lottery.prototype.getRandomData = function() {
+      var max = this.data.length
+      var r = Math.round(Math.random(0, 1) * max)
+      if (this.selected.includes(r)) {
+        this.getRandomData()
+      } else {
+        this.selected.push(r)
+        return r
+      }
+    }
+    lottery.prototype.stop = function() {
+      var _self = this
+      ajax(baseURL + '/weixin/screen/chouJ', 'POST', { ht_id: obj.ht_id, type: obj.curPrize }).then((res) => {
+        clearInterval(this.timer)
+        res.result.status = 1
+
+        _self.addWinnerItem(res.result)
+      })
+      this.selected = []
+    }
+    lottery.prototype.update = function(data) {
+      var _self = this
+      this.data = data
+    }
+    lottery.prototype.addWinnerItem = function(item) {
+      responseDatas.records.unshift(item)
+      this.set(item)
+      formatWinner(item)
+      setTimeout(function() {
+        fullScreenWinner(item)
+      }, 200)
+    }
+  })
+  </script>
+</body>
+
+</html>

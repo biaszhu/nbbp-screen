@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-touch-fullscreen" content="YES">
+  <meta name="screen-orientation" content="portrait">
+  <meta name="x5-orientation" content="portrait">
+  <title></title>
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="./css/song.css">
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="../common_js/common.js"></script>
+</head>
+
+<body style="display: none;">
+  <video id="videoGift_person_bg" class="full" src="./images/bg.webm" controls="false" muted="muted" style="width:100%;height: 100%;object-fit: cover;"></video>
+  <script id="tpl" type="text/plain">
+    <div class="fullwrap hb-container" id="giftContainer">
+      <div id="" class="fullwrap fullCenter scaleContainer">
+      </div>
+
+        <div id="main" class="webscale hb_main_person" style="z-index: 1003;">
+            <div class="hb_person_avatar">
+              <div class="hb_person_t">
+                <div class="level-container" style="background-image: url(../../images/level-icon/level-{data.initiator_group_id}@3x.png)"></div>
+                <img src="{data.initiator_headimgurl}">
+              </div>
+              <div class="hb_person_n bounce">
+                <p>{data.initiator_nickname}</p>
+              </div>
+            </div>
+            <div class="hb_person_middle">
+              <div class="hb_person_title bounce">
+                <div class="inner-title">
+                  <div>
+                    <p class="send-title" style="text-align: center;">歌曲：{data.dg.title}</p>
+                  </div>
+                  <div class="">
+                    <img src="../../images/hb_arrow.png">
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            <div class="hb_person_avatar">
+              <div class="hb_person_t">
+                <div class="level-container" style="background-image: url(../../images/level-icon/level-{data.sendee_group_id}@3x.png)"></div>
+                <img src="{data.sendee_headimgurl}">
+              </div>
+              <div class="hb_person_n bounce">
+                <p>{data.sendee_nickname}</p>
+              </div>
+            </div>
+            <div class="content-text" id="content-text">{data.content}</div>
+        </div>
+
+    </div>
+  </script>
+</body>
+<script type="text/javascript" src="../../js/func.js?v=1"></script>
+<script type="text/javascript" src="../../js/anime.min.js"></script>
+<script type="text/javascript" src="../common_js/jquery.fittext.js"></script>
+<script type="text/javascript" src="../common_js/jquery.lettering.js"></script>
+<script type="text/javascript" src="../common_js/jquery.textillate.js"></script>
+<script type="text/javascript">
+$(function() {
+  // time
+  window.addEventListener('message', function(e) {
+    var origin = e.origin || e.originalEvent.origin;
+    if (origin !== window.location.origin)
+      return;
+    var tpl = new Template($('#tpl').html());
+    var s = tpl.render({
+      data: e.data
+    });
+    $('body').append(s);
+    scaleSomeWin()
+    scaleWebContent()
+    $('body').show()
+    parent.window.postMessage({status: 'open'}, '*')
+    //Rose.init(e.data.odr_show_time)
+    var flag = false
+    var mainVideo = $('#videoGift_person_bg')
+    mainVideo.one('canplaythrough', function() {
+      mainVideo[0].play()
+      $('#giftContainer').show()
+      anime({
+        targets: '.hb_person_t',
+        scale: [0, 1],
+        rotate: '-4turn',
+        duration: 2000,
+        loop: false,
+        delay: 500,
+        run: function(anim) {
+          if (anim.currentTime > 1500 && !flag) {
+            flag = true
+            anime({
+              targets: '.bounce',
+              scale: [0, 1],
+              duration: 1000,
+              loop: false
+            })
+            var animateClasses = 'flash tada swing flip flipInX flipInY fadeIn fadeInUp fadeInDown fadeInRight fadeInUpBig fadeInDownBig fadeInRightBig bounceIn bounceInDown bounceInUp bounceInRight rotateIn rotateInDownRight rotateInUpLeft rotateInUpRight rollIn';
+                  animateClasses = animateClasses.split(" ")
+                var text = $('#content-text')
+                var index = Math.floor(Math.random(0, 1) * animateClasses.length)
+                text.textillate({ in: { effect: animateClasses[index] } }).css('visibility', 'visible')
+          }
+        }
+      })
+      setTimeout(function(){
+        $('#giftContainer').hide()
+        // $('#giftContainer_person').removeClass('animated bounceIn')
+        mainVideo.off()
+        parent.window.postMessage({ status: 'close' }, '*')
+      }, e.data.odr_show_time * 1000)
+    })
+    // parent.window.showTheme()
+    // window.init({php echo $orderRes["time1"];})
+
+  })
+  parent.window.postMessage({status: 'ready'}, '*')
+   // 监听窗口改变 按比例缩放大小
+  window.addEventListener('resize', debounce(function(){
+    scaleSomeWin()
+    scaleWebContent()
+  }, 500))
+
+  function scaleSomeWin () {
+    var windowWidth = window.innerWidth
+    var windowHeight = window.innerHeight
+    var scale = 1
+    if (windowWidth > windowHeight) {
+      scale = windowHeight / 720
+      //css = {width: parseInt(windowHeight * 1920 / 1080) + 'px', height: windowHeight + 'px'}
+    } else {
+      scale = windowWidth / 1280
+      //css = {width: windowWidth + 'px', height: parseInt(windowWidth * 1080 / 1920) + 'px'}
+    }
+    $('.scaleContainer').css('transform', 'scale(' + scale + ')')
+  }
+
+  function scaleWebContent () {
+    /*var windowWidth = window.innerWidth
+    var windowHeight = window.innerHeight
+    var scale = 1
+    var scaleW = windowWidth / 1920
+    var scaleH = windowHeight / 1080
+    scale = Math.min(scaleW, scaleH)
+    var t_origin = '0 0'
+    if (scaleH < scaleW) {
+      t_origin = '50% 0'
+    }
+    $('.webscale').css({'transform': 'scale(' + scale + ')', 'transform-origin': t_origin})*/
+    var windowWidth = window.innerWidth
+    var windowHeight = window.innerHeight
+    var scale = 1
+    var scaleW = windowWidth / 1920
+    var scaleH = windowHeight / 1080
+    scale = Math.min(scaleW, scaleH)
+    $('.webscale').css('transform', 'scale(' + scale + ')')
+  }
+})
+</script>
+
+</html>
