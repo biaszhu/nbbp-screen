@@ -218,8 +218,17 @@ video::-webkit-media-controls {
   height: 0.9rem;
   top: 0.65rem;
   z-index: 12;
+  transition: all ease-in 0.5s
 }
-
+.logo.oneDM {
+  top:0;
+  width:0.6rem;
+  height:0.6rem
+}
+.msgbt.oneDM {
+  top:0;
+  left:0.9rem;
+}
 .marquee {
   margin: 0 auto;
   overflow: hidden;
@@ -238,8 +247,11 @@ video::-webkit-media-controls {
   z-index: 11;
   display: flex;
   align-items: center;
+  transition: all ease-in 0.5s
 }
-
+.msgbt.hide {
+  visibility: hidden;
+}
 .official-msg {
   font-size: 0.28rem;
   color: #fff;
@@ -269,14 +281,23 @@ video::-webkit-media-controls {
   display: flex;
   overflow: hidden;
 }
-#oneDM {
+#oneDM-top {
   position: absolute;
-  top: 0;
+  top: -0.4rem;
   height: 4rem;
   left: 0;
   width: 100%;
   display: flex;
   overflow: hidden;
+}
+#oneDM-bottom {
+  position: absolute;
+  bottom: 0;
+  height: 1.4rem;
+  left: 0;
+  width: 100%;
+  display: flex;
+  overflow: visible;
 }
 #marquee {
   margin-bottom: 0;
@@ -1136,6 +1157,27 @@ video::-webkit-media-controls {
   color: #f31374;
   border: 1px solid #f31374;
 }
+
+#controls-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform:translate(-50%,-50%);
+  width: 40%;
+  height: 600px;
+  z-index: 9999;
+  background-color: rgba(0,0,0,0.8);
+}
+#controls-center ul {
+  margin-top: 2.1rem;
+}
+#controls-center ul li {
+  padding: 15px 0;
+  color: #fff;
+  text-align: center;
+  font-size: 20px;
+  position: relative;
+}
 .fix-center {
   position: absolute;
   left: 50%;
@@ -1163,7 +1205,14 @@ video::-webkit-media-controls {
 .lottery-btn {
   background: linear-gradient(to bottom, rgba(140, 156, 251, 1), rgba(249, 157, 252, 1));
 }
-#qrcode-setting {
+#barrage-setting {
+  width: 740px;
+  background: rgba(0,0,0,.9);
+  padding: 20px;
+  z-index: 11;
+  color: #fff;
+}
+#qrcode-setting,#notice-setting{
   width: 640px;
   background: rgba(0,0,0,.9);
   padding: 20px;
@@ -1173,7 +1222,7 @@ video::-webkit-media-controls {
 #qrcode-setting .qrcode-list {
   display: flex;
 }
-#qrcode-setting h4 {
+#qrcode-setting h4,#barrage-setting h4 {
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(255,255,255,.7);
   margin-bottom: 10px;
@@ -1241,7 +1290,30 @@ video::-webkit-media-controls {
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
-
+.barrage-setting-list label, #notice-setting  label {
+  display: inline-block;
+  margin: 10px;
+}
+.barrageType label {
+  display: block;
+  margin: 10px;
+}
+.barrage-setting-list input[type="radio"],#notice-setting input[type="radio"],.barrageType input[type="radio"] {
+  display: inline-block;
+  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+} 
+#notice-setting textarea{
+  color: #333;
+  width: 100%;
+  height: 150px;
+  border-color: #555;
+  margin: 10px 0;
+  font-size: 22px;
+  font-weight:bold;
+}
 @-webkit-keyframes bounceIn {
   from,
   20%,

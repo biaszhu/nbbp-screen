@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../common_css/reset.css">
+  <link rel="stylesheet" type="text/css" href="../common_css/animate.min.css">
+  <link rel="stylesheet" type="text/css" href="../common_css/layout-theme-absolute.css">
+  <link rel="stylesheet" type="text/css" href="./css/brother.css">
+  <script type="text/javascript">
+  function cal() {
+    var windowWidth = parent.window.innerWidth
+    var windowHeight = parent.window.innerHeight
+    if (windowWidth > windowHeight && (windowWidth / windowHeight) > 2.5) {
+      document.documentElement.style.fontSize = windowHeight / 19.2 + 'px'
+    } else {
+      document.documentElement.style.fontSize = windowWidth / 19.2 + 'px'
+    }
+  }
+  cal()
+  window.addEventListener("resize", function() {
+    cal()
+  })
+  </script>
+</head>
+
+<body>
+  <input type="hidden" id="ba_type" value="0" />
+  <script id="tpl" type="text/plain">
+  <video id="video" class="blob-video" src="./images/worldcup.webm" autoplay=true controls="false" loop="true" muted="muted"></video>
+  <!--{if $screenRes["img"] != 'http://nb.siweiquanjing.com/attachment/images/niuba.jpg'}-->
+  <div id="secondScene">
+    <div class="" id="main">
+      <div class="user-img-wrapper">
+        <p class="baping-timer">{data.title}<span class="count_time">{data.odr_show_time}</span>S</p>
+        <div class="user-img-container">
+          <img src="./images/pixel.gif" class="u-img" id="u-img">
+        </div>
+      </div>
+      <div class="user-msg-wrapper flex-1 flex flex-v flex-align-center">
+        <div class="user-info flex flex-v flex-align-center">
+          <div class="avatar-border">
+            <span class="avatar-circle-inner"></span>
+            <span class="avatar-circle-outer"></span>
+            <img src="{data.initiator_headimgurl}">
+            <p class="name">{data.initiator_nickname}</p>
+          </div>
+        </div>
+        <div class="user-msg-box">
+          <div class="text">
+            <p class="middle-inner text-content" id="text-content-1" style="visibility: hidden;">{data.content}</p>
+          </div>
+          <p class="totalTime">{data.pro_time}秒</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--{else}-->
+  <div id="thirdScene">
+    <div id="main2">
+      <div class="flex flex-v flex-align-center" id="main2-wrapper">
+        <div class="top-info flex flex-h">
+          <div class="top-info-left flex-1">{data.title}{data.pro_time}S</div>
+          <div class="top-info-middle">
+            <div class="avatar-border2">
+              <span class="avatar-circle-inner2"></span>
+              <span class="avatar-circle-outer2"></span>
+              <img src="{data.initiator_headimgurl}">
+            </div>
+          </div>
+          <div class="top-info-right flex-1"><span class="count_time">{data.odr_show_time}</span>S</div>
+          <p class="name2">{data.initiator_nickname}</p>
+        </div>
+        <div class="user-msg-box2">
+          <div class="text2">
+            <p class="middle-inner text-content" id="text-content-0" style="visibility: hidden;">{data.content}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+  <!--{/if}-->
+  
+</body>
+
+  <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="../common_js/theme-common.js?v=1"></script>
+  <script type="text/javascript" src="../common_js/jquery.fittext.js"></script>
+  <script type="text/javascript" src="../common_js/jquery.lettering.js"></script>
+  <script type="text/javascript" src="../common_js/jquery.textillate.js"></script>
+  <!-- 兄弟 -->
+  <script type="text/javascript" src="./js/brother.js"></script>
+
+ <script>
+$(function() {
+  window.addEventListener('message', function(e) {
+    var origin = e.origin || e.originalEvent.origin;
+    if (origin !== window.location.origin)
+      return;
+    var hasImg = false
+    if (e.data.img.trim() != '') {
+      hasImg = true
+      $('#ba_type').val("1")
+    }
+    var tpl = new Template($('#tpl').html());
+    var s = tpl.render({
+      data: e.data
+    });
+    $('body').append(s);
+    if (hasImg) {
+      var img = new Image()
+      img.src = e.data.img
+      img.onload = function() {
+        $('#u-img').css('background-image', 'url(' + e.data.img + ')')
+        $('#video').one('canplaythrough', function() {
+        parent.window.postMessage({status: 'open'}, '*')
+        window.init(e.data.odr_show_time)
+      })
+      }
+    } else {
+      $('#video').one('canplaythrough', function() {
+        parent.window.postMessage({status: 'open'}, '*')
+        window.init(e.data.odr_show_time)
+      })
+    }
+    // parent.window.showTheme()
+    // window.init({data.odr_show_time})
+    
+  })
+  parent.window.postMessage({status: 'ready'}, '*')
+})
+</script>
+</html>

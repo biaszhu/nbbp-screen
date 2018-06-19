@@ -11,6 +11,7 @@ Timeline.prototype.remove = function() {
     this.events.shift()
 }
 Timeline.prototype.do = function() {
+  console.log(this.events[0].delay)
   if (this.events.length != 0) {
     if (this.events[0].delay) {
       clearTimeout(this.timer)

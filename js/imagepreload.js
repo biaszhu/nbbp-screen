@@ -1,4 +1,4 @@
-var basePicUrl = 'http://xnb.siweiquanjing.com/screen/'
+var basePicUrl = 'http://niuba.siweiquanjing.com/screen/'
 //var basePicUrl = 'http://localhost/nbbp-screen/'
 var AnimationPics = {
   0: [

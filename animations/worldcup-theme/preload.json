@@ -1,0 +1,15 @@
+{
+  "preloads": [
+  	"brother-theme/images/A.png",
+  	"brother-theme/images/E.png",
+  	"brother-theme/images/F.png",
+    "brother-theme/images/left-border.png",
+    "brother-theme/images/right-border.png",
+    "brother-theme/images/avatar-circle-inner.png",
+    "brother-theme/images/avatar-circle-outer.png",
+    "brother-theme/images/avatar-circle-inner.png",
+    "brother-theme/images/avatar-circle-outer.png",
+    "brother-theme/images/worldcup.webm",
+  	"common_img/right-large-border.png"
+  ]
+}

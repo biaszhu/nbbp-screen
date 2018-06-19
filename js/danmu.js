@@ -175,6 +175,7 @@ var faces = [{
   }
 
   bridge.prototype.updateData = function(data) {
+    console.log(data)
     if (!this.opts.loop) {
       if (this.datas.length == 0) {
         this.datas = this.datas.concat(data)
@@ -474,6 +475,8 @@ var faces = [{
     //this.el[0].style.willChange = 'transform'
     this.elwidth = $(this.el).width() + this.avawidth
     this.flagId = parseInt(new Date().getTime() / 1000)
+    console.log(this.bridge.damuProperty)
+    console.log(this.channel)
     this.bridge.damuProperty[this.channel].els.push({
       id: this.flagId,
       el: this.el[0],
@@ -520,7 +523,9 @@ var faces = [{
     this.channel = channel
     return parseInt(this.bridge.maxP / (this.bridge.damuPosNum + 1) * (parseInt(channel) + 1)) - parseInt(this.bridge.elHeight / 2)
   }
-
+  // danmu.prototype.getPostion = function() {
+  //   return 10
+  // }
   window.bridge = bridge
 
   /*上下滚动*/

@@ -57,11 +57,11 @@
     <!-- <video id="video" class="blob-video" data-src="bg.webm" autoplay=true controls="false" loop="true"></video> -->
     <!--<video id="video" class="blob-video" data-src="../addons/bl_wx_wall/template/images/newbig/bg.webm" autoplay=true controls="false" loop="true"></video>-->
     <div class="main" id="main" v-if="show">
-      <div class="msgbt">
+      <div class="msgbt" :class="[{hide : setting.noticeIsShow !='1' },{oneDM : setting.animateType == '3' }]">
         <img src="http://nb.siweiquanjing.com/addons/bl_wx_wall/template/images/new_img/36.png" class="broadcast">
         <div class="official-info">
           <div class="marquee" id="testmarquee">
-            <div class="official-msg" data-duration='20000' data-gap='5' data-duplicated='true' style="width:100%;overflow:hidden;"><span class="notice" v-for="i in 4" :key="i">{{notice}}</span></div>
+            <div class="official-msg" data-duration='20000' data-gap='4'  data-duplicated='true' style="width:100%;overflow:hidden;"><span class="notice" v-for="i in 4" :key="i">{{setting.noticeContentShow}}</span></div>
           </div>
         </div>
       </div>
@@ -70,10 +70,10 @@
         </div>
       </div> -->
       <span class="rank-border"></span>
-      <div class="logo">
+      <div class="logo" v-show="setting.noticeIsShow =='1'">
         <img :src="basicInfo.logo" style="border-radius: 50%;display: block;width: 100%;height: 100%;">
       </div>
-      <div id="oneDM" style="display: none;"></div>
+      <div id="oneDM-top" style="display: none;"></div>
       <div id="marquee" style="display: none;">
         <div class="marquee-scroller">
         </div>
@@ -81,7 +81,8 @@
       <div id="bridge" style="display: none;">
         <div class="bridge-item" id="tmp" style="visibility: hidden;"><span class="rank-border"></span></div>
       </div>
-      <div id="qrcode-wrap" style="display: none;">
+      <div id="oneDM-bottom" style="display: none;"></div>
+      <div id="qrcode-wrap" style="display: none;" v-show="setting.qrIsShow == 1">
         <div id="qrcode-box">
           <img src="images/cow.png" class="cow">
           <img src="images/h1.png" class="heart1">
@@ -119,27 +120,60 @@
               </div>
             </div>
           </li>
-          <li class="control">轮播设置
-            <div class="control-content click">
+          <li class="control">消息显示设置
+            <div class="control-content barrageType click ">
               <h4>轮播动画选择</h4>
               <div class="radio-group mt20">
-                <label class="bgradio" for="animaselet1">
-                  <input type="radio" v-model="setting.animateType" id="animaselet1" value="2">弹幕</label>
-                <label class="bgradio" for="animaselet2">
-                  <input type="radio" v-model="setting.animateType" id="animaselet2" value="1">滚动</label>
-                <!-- <label class="bgradio" for="animaselet3">
-                  <input type="radio" v-model="setting.animateType" id="animaselet3" value="3">弹幕单条</label> -->
+                <label class="bgradio flex" for="animaselet1">
+                  <input type="radio" v-model="setting.animateType" id="animaselet1" @change ="visibleSet(JSON.stringify({key: 'barrageSetting', value: false}))" value="2">弹幕</label>
+                <label class="bgradio flex" for="animaselet2">
+                  <input type="radio" v-model="setting.animateType" id="animaselet2" @change ="visibleSet(JSON.stringify({key: 'barrageSetting', value: false}))" value="1">滚动</label>
+                <label class="bgradio flex" for="animaselet3" style>
+                  <input type="radio" v-model="setting.animateType" id="animaselet3" value="3" @change ="visibleSet(JSON.stringify({key: 'barrageSetting', value: true}));setting.bgPicked = '0';initBpSetting()">弹幕单条 (世界杯模式) <span style='color:#4d96f5;cursor:pointer,margin-left:20px' @click="visibleSet(JSON.stringify({key: 'barrageSetting', value: true}));initBpSetting()">设置</span></label>
               </div>
             </div>
           </li>
           <li class="control hoverout" @click="visibleSet(JSON.stringify({key: 'qrcodeSetting', value: true}))">二维码设置</li>
+          <li class="control hoverout" @click="visibleSet(JSON.stringify({key: 'noticeSetting', value: true}))">公告设置</li>
           <li style="padding: 15px 10px; font-size: 16px;text-align: left;">
             <p>!!! 注意：</p>
             同按【Alt+Tab】可调出设置窗口</li>
         </ul>
       </div>
-    </div>
     <!--settings-->
+    <div id="barrage-setting" class="fix-center f18" v-show="visible.barrageSetting">
+      <h4 class="f20">单条弹幕（世界杯模式）设置<i class="iconfont pointer" style="float: right;font-size: 28px;margin-top: -6px;" @click="visibleSet(JSON.stringify({key: 'barrageSetting', value: false}))">&#xe658;</i></h4>
+      <div class="barrage-main">
+        <div class="barrage-setting-list mt20">
+          <p>大屏幕是否展示霸屏效果</p>
+          <p style='font-size:14px;color:#ddd'>选择隐藏显示后，用户不可以购买主题霸屏。红包、打赏礼物、点歌可购买，但霸屏效果在大屏幕端不显示</p>
+          <label><input type="radio" v-model="setting.bpIsShow"  value="0">隐藏</label>
+          <label><input type="radio" v-model="setting.bpIsShow"  value="1">展示</label>
+          <p>单条弹幕显示位置</p>
+          <label><input type="radio" v-model="setting.animatePosition"  value="0">大屏幕顶端</label>
+          <label><input type="radio" v-model="setting.animatePosition"  value="1">大屏幕底端</label>
+          <p>公告展示选择</p>
+          <label><input type="radio" v-model="setting.noticeIsShow"  value="0">隐藏</label>
+          <label><input type="radio" v-model="setting.noticeIsShow"  value="1">展示</label>
+          <p>二维码展示选择</p>
+          <label><input type="radio" v-model="setting.qrIsShow"  value="0">隐藏</label>
+          <label><input type="radio" v-model="setting.qrIsShow"  value="1">展示</label>
+        </div>
+      </div>
+    </div>
+        <div id="notice-setting" class="fix-center f18" v-show="visible.noticeSetting">
+      <h4 class="f20">公告设置<i class="iconfont pointer" style="float: right;font-size: 28px;margin-top: -6px;" @click="visibleSet(JSON.stringify({key: 'noticeSetting', value: false}))">&#xe658;</i></h4>
+      <div class="notice-main">
+        <div class="mt20">
+          <p>请设置公告内容：</p>
+          <textarea v-model="setting.noticeContent" maxlength="60"></textarea>
+          <button style='float:right' @click="changeNotice(setting.noticeContent)">保存公告</button>
+          <p>公告展示选择：</p>
+          <label><input type="radio" v-model="setting.noticeIsShow"  value="0">隐藏</label>
+          <label><input type="radio" v-model="setting.noticeIsShow"  value="1">展示</label>
+        </div>
+      </div>
+    </div>
     <div id="qrcode-setting" class="fix-center f18" v-show="visible.qrcodeSetting">
       <h4 class="f20">二维码设置<i class="iconfont pointer" style="float: right;font-size: 28px;margin-top: -6px;" @click="visibleSet(JSON.stringify({key: 'qrcodeSetting', value: false}))">&#xe658;</i></h4>
       <div class="qrcode-main">
@@ -294,7 +328,9 @@
 
   var barConfig = {
     ht_id: getQueryString("ht_id"),
-    doRecords: ''
+    doRecords: '',
+    doRecordsOneDm: '',
+    noticeContent: ''
   }
 
   // 统计霸屏时长接口
@@ -313,22 +349,32 @@
         clearTimeout(screenTime)
         window.ajaxScreenTime()
       })
-    }, 3000)
+    }, 5000)
   }
 
-  var Anitype = 1 // 1滚动 2弹幕
+  var Anitype = 1 // 1滚动 2弹幕 3单条弹幕
+  var AniPosition = 0
+  var BpIsShow = 1
+  var QrIsShow = 1
+  var NoticeIsShow = 1
   var bar = {}
   var isAppInit = false
   var app = new Vue({
     el: '#app',
     data: {
-      notice: '',
+      // notice: '',
       marquee: null,
       type: 0,
       show: false,
       setting: {
         bgPicked: '-1',
-        animateType: '1'
+        animateType: '1',
+        animatePosition: '0',
+        bpIsShow: '',
+        qrIsShow: '1',
+        noticeIsShow: '1',
+        noticeContent:'',
+        noticeContentShow: '',
       },
       basicInfo: {},
       customeVideo: '',
@@ -338,10 +384,26 @@
       showQrcode: '',
       customeQrcodes: [],
       visible: {
-        qrcodeSetting: false
+        qrcodeSetting: false,
+        barrageSetting: false,
+        noticeSetting: false,
       }
     },
     methods: {
+      initBpSetting() {
+        if (this.setting.bpIsShow == '') {
+          this.setting.bpIsShow = '1'
+        }
+      },
+      changeNotice(val) {
+        this.setting.noticeContentShow = this.setting.noticeContent
+        updateSettingNotice(val)
+        this.marquee.marquee('destroy')
+        this.marquee = $('.official-msg').css('width', $('#testmarquee').width()).find('.notice').text(val).parent('.official-msg').marquee({
+          direction: 'left',
+          duplicated: false
+        })
+      },
       goTo(url) {
         window.location.href = window.location.origin + window.location.pathname + url + '?ht_id=' + barConfig.ht_id
       },
@@ -441,7 +503,8 @@
       var p3 = ajax(baseURL + '/weixin/screen/getQrCodeInfo', 'POST', { ht_id: barConfig.ht_id })
       var p4 = ajax(baseURL + '/weixin/version/getNewVersion', 'POST', { type: 1 })
       var p5 = ajax(baseURL + '/weixin/screen/getScreenConfig', 'POST', { ht_id: barConfig.ht_id })
-      var p = Promise.all([p1, p2, p3, p4, p5])
+      var p6 = ajax(baseURL + '/weixin/screen/getWorldScreenSetting', 'POST', { ht_id: barConfig.ht_id })
+      var p = Promise.all([p1, p2, p3, p4, p5, p6])
       p.then(function(results) {
         // 设置版本
         if (!isArray(results[3].result) && results[3].result.data) {
@@ -451,13 +514,15 @@
         if (results[4].result) {
           barConfig.doRecords = results[4].result.value
         }
-
+        if (results[5].result) {
+          barConfig.doRecordsOneDm = results[5].result
+        }
         _self.customeQrcodes = results[2].result
         var default_Qrcode = results[2].result.find(function(v) {
           return v.is_default == 1
         })
         _self.showQrcode = default_Qrcode && default_Qrcode.img_url
-        _self.notice = results[1].result ? results[1].result.content : ''
+        barConfig.noticeContent = results[1].result ? results[1].result.content : ''
         // 图片加载完回调
         var preload = new imagePreload({
           callback: window.init
@@ -502,6 +567,32 @@
           if (_animateType) {
             Anitype = ~~(_animateType)
             app.setting.animateType = Anitype
+          }
+          var _animatePosition = window.customGet('position','1')
+          if (_animatePosition) {
+            AniPosition = ~~(_animatePosition)
+            app.setting.animatePosition = AniPosition
+
+          }
+          var _bpIsShow = window.customGet('is_show','1')
+          if (_bpIsShow) {
+            BpISshow = ~~(_bpIsShow)
+            app.setting.bpIsShow = BpISshow
+          }
+          var _qrIsShow = window.customGet('qr_show','1')
+          if (_qrIsShow) {
+            QrISshow = ~~(_qrIsShow)
+            app.setting.qrIsShow = QrISshow
+          }
+          var _noticeIsShow = window.customGet('notice_show','1')
+          if (_noticeIsShow) {
+            NoticeIsShow = ~~(_noticeIsShow)
+            app.setting.noticeIsShow = NoticeIsShow
+          }
+          var _noticeContent = barConfig.noticeContent
+          if (_noticeContent) {
+            app.setting.noticeContent = _noticeContent
+            app.setting.noticeContentShow = _noticeContent
           }
         }
         preload.init()
@@ -559,23 +650,64 @@
           // 传递给客户端
           //window.wtfCall.toggleAnime(JSON.stringify({type: Number(newVal)}))
         }
+      },
+      'setting.animatePosition' (newVal, oldVal) {
+        window.customSet('animatePosition', newVal,1)
+        window.toggleAnimePosition(Number(newVal))
+        updateSettingOneDM("2",newVal)
+      },
+      'setting.bpIsShow' (newVal, oldVal) {
+        window.customSet('is_show', newVal,1)
+        // window.toggleAnimePosition(Number(newVal,1))
+        updateSettingOneDM("1",newVal)
+      },
+      'setting.qrIsShow' (newVal, oldVal) {
+        window.customSet('qr_show', newVal,1)
+        // window.toggleAnimePosition(Number(newVal,1))
+        updateSettingOneDM("4",newVal)
+      },
+      'setting.noticeIsShow' (newVal, oldVal) {
+        window.customSet('notice_show', newVal,1)
+        // window.toggleAnimePosition(Number(newVal))
+        updateSettingOneDM("3",newVal)
+        if (newVal == '1') {
 
+        }
+      },
+      'setting.noticeContent' (newVal, oldVal) {
+        barConfig.noticeContent = newVal
+        // window.toggleAnimePosition(Number(newVal))
       }
     }
   })
 
   // 更新设置
   function updateSettingRecord() {
-    ajax(baseURL + '/weixin/screen/screenQrcodeUpdate', 'POST', { ht_id: barConfig.ht_id, value: barConfig.doRecords }, { ignoreError: true }).then(function(res) {
+    ajax(baseURL + '/weixin/screen/screenQrcodeUpdate', 'POST', { ht_id: barConfig.ht_id, value: barConfig.doRecords ,type: Anitype}, { ignoreError: true }).then(function(res) {
       //console.log(res)
     })
   }
-
+  function updateSettingOneDM(type,val) {
+    ajax(baseURL + '/weixin/screen/worldScreenSetting', 'POST', { ht_id: barConfig.ht_id, value: val ,type: type}, { ignoreError: true }).then(function(res) {
+      //console.log(res)
+    })
+  }
+  function updateSettingNotice(val) {
+    ajax(baseURL + '/weixin/screen/updateNoticeContent', 'POST', { ht_id: barConfig.ht_id, content: val }, { ignoreError: true }).then(function(res) {
+      //console.log(res)
+    })
+  }
   // 设置当前设置
-  window.customSet = function(key, value) {
-    var custom = barConfig.doRecords
+  window.customSet = function(key, value, type) {
+    if (!type) {
+      var custom = barConfig.doRecords
+    } else if (type == '1'){
+      var custom = barConfig.doRecordsOneDm
+    }
     if (custom) {
-      custom = JSON.parse(custom)
+      if (typeof(custom) == "string") {
+        custom = JSON.parse(custom)
+      }
       if (custom[key]) {
         custom[key] = value
       } else {
@@ -585,14 +717,24 @@
       custom = {}
       custom[key] = value
     }
-    barConfig.doRecords = JSON.stringify(custom)
+    if (!type) {
+      barConfig.doRecords = JSON.stringify(custom)
+    } else if (type == '1'){
+      barConfig.doRecordsOneDm = JSON.stringify(custom)
+    }
   }
 
   // 获取当前设置
-  window.customGet = function(key) {
-    var custom = barConfig.doRecords
+  window.customGet = function(key,type) {
+    if (!type) {
+      var custom = barConfig.doRecords
+    } else if (type == '1'){
+      var custom = barConfig.doRecordsOneDm
+    }
     if (custom) {
-      custom = JSON.parse(custom)
+      if (typeof(custom) == "string") {
+        custom = JSON.parse(custom)
+      }
       if (custom[key]) {
         return custom[key]
       } else {
@@ -693,7 +835,7 @@
     // 获取最新消息
     window.timeGetNewMsg = null
     window.ajaxGetNewMsg = function() {
-      ajax(baseURL + '/weixin/Screen/getMaxMsg', 'POST', { ht_id: barConfig.ht_id, id: scroll1.getMaxId() }).then(function(res) {
+    ajax(baseURL + '/weixin/Screen/getMaxMsg', 'POST', { ht_id: barConfig.ht_id, id: scroll1.getMaxId() }).then(function(res) {
         if (isArray(res.result) && res.result.length > 0) {
           if (scroll1.getDatas().length === 0 && Anitype == 2) {
             window.scroll1.destory()
@@ -792,9 +934,9 @@
     window.timeGetNotice = null
     window.ajaxGetNotice = function() {
       ajax(baseURL + '/weixin/Screen/getNotice', 'POST', { ht_id: barConfig.ht_id }).then(function(res) {
-        if (res.result.content != app.notice) {
+        if (res.result.content != app.setting.noticeContent) {
           // 更新
-          app.notice = res.result.content
+          app.setting.noticeContent = res.result.content
           app.$nextTick(function() {
             app.marquee.marquee('destroy')
             app.marquee = $('.official-msg').css('width', $('#testmarquee').width()).marquee({
@@ -803,10 +945,10 @@
             })
           })
         }
-        clearTimeout(timeGetNotice)
-        timeGetNotice = setTimeout(function() {
-          ajaxGetNotice()
-        }, 10000)
+        // clearTimeout(timeGetNotice)
+        // timeGetNotice = setTimeout(function() {
+        //   ajaxGetNotice()
+        // }, 10000)
       }).catch(function(){
         clearTimeout(timeGetNotice)
         timeGetNotice = setTimeout(function() {
@@ -820,19 +962,34 @@
         ajaxGetNotice()
         ajaxGetNewOrder()
         if (Anitype == 2) {
+          $(".logo").removeClass("oneDM")
           initGuidao(res.result)
           ajaxGetNewMsg()
           ajaxDeleteMsg()
         } else if (Anitype == 1) {
+          $(".logo").removeClass("oneDM")
           scroll1 = new mmarquee({ datas: res.result })
           ajaxGetNewMsg()
           ajaxDeleteMsg()
           // 滚动模式才请求最新图片
           //ajaxGetNewestImg()
         } else if (Anitype == 3) {
-          window.scroll1 = new bridge([], { loop: false, dom: $('#oneDM') })
+          $(".logo").addClass("oneDM")
+          var dom
+          if (AniPosition == 0) {
+            dom = $('#oneDM-top')
+          } else if (AniPosition == 1) {
+            dom = $('#oneDM-bottom')
+          }
+          window.scroll1 = new bridge(res.result, { loop: true, dom: dom })
+          var val = scroll1.getNextData()
+          if (val != null && val != undefined) {
+            scroll1.add(val,0)
+          }
           // window.scroll1.setMaxId(res.result.length > 0 ? res.result[0].id : 0)
+          console.log(window.scroll1)
           ajaxGetNewMsg()
+          ajaxDeleteMsg()
         }
       })
     }
@@ -1052,6 +1209,11 @@
   // 切换弹幕还是滚动
   window.toggleAnime = function(type) {
     Anitype = type
+    resetDataFixLayout()
+  }
+  // 切换单条弹幕滚动位置 
+  window.toggleAnimePosition = function(type) {
+    AniPosition = type
     resetDataFixLayout()
   }
   // 重新请求数据 重设布局
